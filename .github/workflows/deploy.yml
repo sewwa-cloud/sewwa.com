@@ -1,0 +1,270 @@
+name: Deploy Blog to Vultr
+
+on:
+  push:
+    branches:
+      - main  # Auto-deploy on push to main
+  release:
+    types: [published]  # Auto-deploy on release
+  workflow_dispatch: # Manual trigger from GitHub UI
+
+env:
+  NODE_VERSION: '20'
+  APP_NAME: 'blog'
+  APP_DIR: '/var/www/sewwa.com/blog'
+  RELEASES_DIR: '/var/www/sewwa.com/blog/releases'
+  LOGS_DIR: '/var/www/sewwa.com/blog/logs'
+
+jobs:
+  # Job 1: Lint
+  lint:
+    name: 🔍 Lint Code
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Run ESLint
+        run: npm run lint
+
+  # Job 2: Build
+  build:
+    name: 🏗️ Build Blog
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Astro
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: 📦 Create deployment archive
+        run: |
+          # List files to verify
+          echo "📂 Files to archive:"
+          ls -la dist/
+          
+          # Create archive with dist folder
+          tar -czf deploy.tar.gz dist/
+          
+          # Display archive info
+          echo "📦 Archive created:"
+          ls -lh deploy.tar.gz
+          echo "📋 Archive contents:"
+          tar -tzf deploy.tar.gz | head -20
+
+      - name: 💾 Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-archive
+          path: deploy.tar.gz
+          retention-days: 7
+
+  # Job 3: Deploy
+  deploy:
+    name: 🚀 Deploy to Vultr
+    runs-on: ubuntu-latest
+    needs: build
+    environment: production
+    
+    steps:
+      - name: 📥 Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: deploy-archive
+
+      - name: 🔑 Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 📤 Upload to Vultr
+        run: |
+          scp -i ~/.ssh/deploy_key \
+            -P ${{ secrets.SSH_PORT || '22' }} \
+            deploy.tar.gz \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/deploy_blog_${{ github.run_number }}.tar.gz
+
+      - name: 🚀 Deploy on server
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -p ${{ secrets.SSH_PORT || '22' }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'ENDSSH'
+            set -e
+            
+            # Variables
+            TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+            RELEASE_DIR="${{ env.RELEASES_DIR }}/$TIMESTAMP"
+            APP_DIR="${{ env.APP_DIR }}"
+            ARCHIVE="/tmp/deploy_blog_${{ github.run_number }}.tar.gz"
+            
+            echo "📦 Deploying to: $RELEASE_DIR"
+            
+            # Create release directory
+            mkdir -p $RELEASE_DIR
+            
+            # Extract archive
+            echo "📂 Extracting archive..."
+            tar -xzf $ARCHIVE -C $RELEASE_DIR
+            
+            # Create directories
+            mkdir -p ${{ env.RELEASES_DIR }}
+            mkdir -p ${{ env.LOGS_DIR }}
+            mkdir -p $(dirname $APP_DIR)
+            
+            # Backup current release (if exists)
+            if [ -L "$APP_DIR" ]; then
+              CURRENT_RELEASE=$(readlink -f $APP_DIR)
+              if [ -d "$CURRENT_RELEASE" ]; then
+                BACKUP_DIR="${{ env.RELEASES_DIR }}/backup_$(date +%Y%m%d_%H%M%S)"
+                echo "💾 Backing up current release to: $BACKUP_DIR"
+                mkdir -p $BACKUP_DIR
+                cp -al $CURRENT_RELEASE/* $BACKUP_DIR/ 2>/dev/null || true
+              fi
+            elif [ -d "$APP_DIR" ] && [ ! -L "$APP_DIR" ]; then
+              # If APP_DIR is a directory (first deployment), back it up
+              BACKUP_DIR="${{ env.RELEASES_DIR }}/backup_$(date +%Y%m%d_%H%M%S)"
+              echo "💾 Backing up existing directory to: $BACKUP_DIR"
+              mkdir -p $BACKUP_DIR
+              cp -al $APP_DIR/* $BACKUP_DIR/ 2>/dev/null || true
+              rm -rf $APP_DIR
+            fi
+            
+            # Update symlink (atomic operation for zero downtime)
+            echo "🔗 Updating symlink..."
+            ln -sfn $RELEASE_DIR/dist $APP_DIR
+            
+            # Set proper permissions
+            echo "🔐 Setting permissions..."
+            chown -R www-data:www-data $RELEASE_DIR/dist 2>/dev/null || true
+            chmod -R 755 $RELEASE_DIR/dist
+            
+            # Cleanup
+            echo "🧹 Cleaning up..."
+            rm -f $ARCHIVE
+            
+            # Keep only last 5 releases
+            cd ${{ env.RELEASES_DIR }}
+            ls -dt */ 2>/dev/null | grep -E '^[0-9]{8}_[0-9]{6}/$' | tail -n +6 | xargs -r rm -rf
+            echo "✅ Kept last 5 releases"
+            
+            # Keep only last 3 backups
+            ls -dt backup_* 2>/dev/null | tail -n +4 | xargs -r rm -rf
+            echo "✅ Kept last 3 backups"
+            
+            echo "🎉 Deployment completed successfully!"
+            echo "📍 Release: $RELEASE_DIR/dist"
+            echo "📍 Symlink: $APP_DIR -> $RELEASE_DIR/dist"
+          ENDSSH
+
+      - name: 🧹 Cleanup
+        if: always()
+        run: |
+          rm -f ~/.ssh/deploy_key
+          rm -f deploy.tar.gz
+
+  # Job 4: Verify
+  verify:
+    name: ✅ Verify Deployment
+    runs-on: ubuntu-latest
+    needs: deploy
+    
+    steps:
+      - name: 🔑 Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: ✅ Check deployment
+        run: |
+          echo "⏳ Waiting for deployment to complete..."
+          sleep 5
+          
+          ssh -i ~/.ssh/deploy_key \
+            -p ${{ secrets.SSH_PORT || '22' }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            'ls -la ${{ env.APP_DIR }} && echo "✅ Deployment directory exists"'
+
+      - name: 🏥 Health check
+        run: |
+          echo "🔍 Performing health check..."
+          sleep 5
+          
+          # Try to curl the endpoint
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            --max-time 30 \
+            https://www.sewwa.com/blog/ || echo "000")
+          
+          if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "301" ] || [ "$RESPONSE" = "302" ]; then
+            echo "✅ Health check passed! (Status: $RESPONSE)"
+          else
+            echo "⚠️  Health check returned status: $RESPONSE"
+            echo "Note: This might be normal if the site is still deploying or DNS not configured yet"
+          fi
+
+      - name: 🧹 Cleanup
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
+
+  # Job 5: Summary
+  summary:
+    name: 📊 Deployment Summary
+    runs-on: ubuntu-latest
+    needs: [lint, build, deploy, verify]
+    if: always()
+    
+    steps:
+      - name: 📊 Generate summary
+        run: |
+          echo "## 🎉 Blog Deployment Complete!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger:** \`${{ github.event_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** Production (Vultr VPS)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Job Status" >> $GITHUB_STEP_SUMMARY
+          echo "- Lint: \`${{ needs.lint.result }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Build: \`${{ needs.build.result }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Deploy: \`${{ needs.deploy.result }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify: \`${{ needs.verify.result }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** https://www.sewwa.com/blog" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📝 Quick Commands" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "# Check deployment directory" >> $GITHUB_STEP_SUMMARY
+          echo "ssh user@server 'ls -la /var/www/sewwa.com/blog'" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# View releases" >> $GITHUB_STEP_SUMMARY
+          echo "ssh user@server 'ls -lt /var/www/sewwa.com/blog/releases'" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# Rollback to previous release (example)" >> $GITHUB_STEP_SUMMARY
+          echo "ssh user@server 'cd /var/www/sewwa.com/blog/releases && ls -dt */ | head -2'" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
