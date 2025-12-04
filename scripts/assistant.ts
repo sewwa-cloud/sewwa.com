@@ -1,3 +1,4 @@
+/* eslint-env node */
 import { mkdir, writeFile } from 'node:fs/promises'
 import * as p from '@clack/prompts'
 import isValidFilename from 'valid-filename'

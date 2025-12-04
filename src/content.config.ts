@@ -7,7 +7,7 @@ const zodEnum = <T>(arr: T[]): [T, ...T[]] => arr as [T, ...T[]]
 const TAGS_NAMES = Array.from(FRONTMATTER_TAGS.keys())
 
 const blog = defineCollection({
-	loader: glob({ pattern: '**\/[^_]*.mdx', base: './content/blog' }),
+	loader: glob({ pattern: '**/[^_]*.mdx', base: './content/blog' }),
 	schema: z.object({
 		title: z.string(),
 		slug: z.string(),

@@ -12,7 +12,8 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint --fix",
 		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,astro,json,css,md}\"",
-		"assistant": "tsx ./scripts/assistant.ts"
+		"assistant": "tsx ./scripts/assistant.ts",
+		"prepare": "husky"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^4.3.9",
@@ -46,8 +47,10 @@
 		"astro-eslint-parser": "^1.2.2",
 		"eslint": "^9.39.0",
 		"eslint-plugin-astro": "^1.4.0",
+		"globals": "^16.5.0",
 		"hast-util-to-string": "^3.0.1",
 		"hastscript": "^9.0.1",
+		"husky": "^9.1.7",
 		"mdast-util-mdx-jsx": "^3.2.0",
 		"mdast-util-to-string": "^4.0.0",
 		"prettier": "^3.4.0",

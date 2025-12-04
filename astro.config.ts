@@ -15,7 +15,6 @@ import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSlug from 'rehype-slug'
 import remarkDirective from 'remark-directive'
 import remarkSmartypants from 'remark-smartypants'
-import { SITE } from './src/constants'
 import { remarkAsides } from './src/remark'
 import { pagefindIntegration } from './src/utils'
 
@@ -69,7 +68,7 @@ export default defineConfig({
 					headingProperties() {
 						return { tabIndex: -1 }
 					},
-					properties(node: any) {
+					properties(node: Parameters<typeof toString>[0]) {
 						return { ariaLabel: `Permalink: ${toString(node)}`, className: 'anchor' }
 					},
 					content() {

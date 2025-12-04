@@ -1,4 +1,4 @@
-type MapKey<T extends Map<any, any>> = T extends Map<infer K, any> ? K : never
+type MapKey<T extends Map<unknown, unknown>> = T extends Map<infer K, unknown> ? K : never
 
 /**
  * Metadata for your site

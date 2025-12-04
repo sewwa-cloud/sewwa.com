@@ -36,7 +36,7 @@ export function isoDateFormat(date: Date): string {
  * // --- title: hello world\nslug: hello-world\n---
  * ```
  */
-export function frontmatterToString(data: Record<string, any>): string {
+export function frontmatterToString(data: Record<string, unknown>): string {
 	const yaml = Object.entries(data)
 		.map(([key, value]) => {
 			if (Array.isArray(value)) {
