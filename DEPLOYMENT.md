@@ -45,11 +45,13 @@ The deployment uses a **release-based, zero-downtime** strategy:
 3. Proper directory structure:
    ```
    /var/www/sewwa.com/
-   ├── html/                  # Symlink to current release
+   ├── html/                  # Application directory
+   │   ├── current/           # Symlink to current release
    │   ├── releases/          # Release directories
    │   │   ├── 20250101_120000/
    │   │   ├── 20250101_130000/
    │   │   └── ...
+   │   ├── backup_*/          # Backup directories
    │   └── logs/              # Deployment logs (optional)
    └── color-converter/       # Other applications (example)
    ```
@@ -223,8 +225,8 @@ chown -R www-data:www-data $RELEASE_DIR
 chmod -R 755 $RELEASE_DIR
 
 # Update symlink
-mkdir -p $(dirname $APP_DIR)
-ln -sfn $RELEASE_DIR $APP_DIR
+mkdir -p $APP_DIR
+ln -sfn $RELEASE_DIR $APP_DIR/current
 
 # Cleanup
 rm -f $ARCHIVE
@@ -245,7 +247,7 @@ ssh user@your-server 'ls -lt /var/www/sewwa.com/html/releases'
 ### Step 2: Check Current Release
 
 ```bash
-ssh user@your-server 'readlink -f /var/www/sewwa.com/html'
+ssh user@your-server 'readlink -f /var/www/sewwa.com/html/current'
 ```
 
 ### Step 3: Rollback to Previous Release
@@ -260,7 +262,7 @@ PREVIOUS_RELEASE=$(ls -dt $RELEASES_DIR/*/ | grep -E '[0-9]{8}_[0-9]{6}' | sed -
 
 if [ -n "$PREVIOUS_RELEASE" ]; then
   echo "Rolling back to: $PREVIOUS_RELEASE"
-  ln -sfn $PREVIOUS_RELEASE $APP_DIR
+  ln -sfn $PREVIOUS_RELEASE $APP_DIR/current
   echo "✅ Rollback complete!"
 else
   echo "❌ No previous release found"
@@ -276,7 +278,7 @@ APP_DIR="/var/www/sewwa.com/html"
 RELEASE_DIR="/var/www/sewwa.com/html/releases/20250101_120000"  # Replace with actual timestamp
 
 if [ -d "$RELEASE_DIR" ]; then
-  ln -sfn $RELEASE_DIR $APP_DIR
+  ln -sfn $RELEASE_DIR $APP_DIR/current
   echo "✅ Rolled back to: $RELEASE_DIR"
 else
   echo "❌ Release directory not found: $RELEASE_DIR"
@@ -339,7 +341,7 @@ git push
    ```
 2. Verify symlink exists:
    ```bash
-   ls -la /var/www/sewwa.com/html
+   ls -la /var/www/sewwa.com/html/current
    ```
 3. Check Nginx error logs:
    ```bash
@@ -367,7 +369,7 @@ sudo chmod -R 775 /var/www/sewwa.com/html/releases/
 **Solution:**
 1. Verify symlink points to latest release:
    ```bash
-   readlink -f /var/www/sewwa.com/html
+   readlink -f /var/www/sewwa.com/html/current
    ```
 2. Clear Nginx cache (if enabled)
 3. Hard refresh browser (Ctrl+F5 or Cmd+Shift+R)
@@ -395,7 +397,7 @@ Create or update Nginx configuration:
 server {
     listen 80;
     server_name www.sewwa.com;
-    root /var/www/sewwa.com/html;
+    root /var/www/sewwa.com/html/current;
     index index.html;
     
     location / {
@@ -432,12 +434,12 @@ After deployment, verify:
 
 1. **Check Deployment Directory:**
    ```bash
-   ls -la /var/www/sewwa.com/html
+   ls -la /var/www/sewwa.com/html/current
    ```
 
 2. **Verify Symlink:**
    ```bash
-   readlink -f /var/www/sewwa.com/html
+   readlink -f /var/www/sewwa.com/html/current
    ```
 
 3. **Check File Permissions:**

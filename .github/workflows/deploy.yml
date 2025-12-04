@@ -148,24 +148,17 @@ jobs:
             # Create directories
             mkdir -p ${{ env.RELEASES_DIR }}
             mkdir -p ${{ env.LOGS_DIR }}
-            mkdir -p $(dirname $APP_DIR)
+            mkdir -p $APP_DIR
             
             # Backup current release (if exists)
-            if [ -L "$APP_DIR" ]; then
-              CURRENT_RELEASE=$(readlink -f $APP_DIR)
+            if [ -L "$APP_DIR/current" ]; then
+              CURRENT_RELEASE=$(readlink -f $APP_DIR/current)
               if [ -d "$CURRENT_RELEASE" ]; then
-                BACKUP_DIR="${{ env.RELEASES_DIR }}/backup_$(date +%Y%m%d_%H%M%S)"
+                BACKUP_DIR="$APP_DIR/backup_$(date +%Y%m%d_%H%M%S)"
                 echo "💾 Backing up current release to: $BACKUP_DIR"
                 mkdir -p $BACKUP_DIR
                 cp -al $CURRENT_RELEASE/* $BACKUP_DIR/ 2>/dev/null || true
               fi
-            elif [ -d "$APP_DIR" ] && [ ! -L "$APP_DIR" ]; then
-              # If APP_DIR is a directory (first deployment), back it up
-              BACKUP_DIR="${{ env.RELEASES_DIR }}/backup_$(date +%Y%m%d_%H%M%S)"
-              echo "💾 Backing up existing directory to: $BACKUP_DIR"
-              mkdir -p $BACKUP_DIR
-              cp -al $APP_DIR/* $BACKUP_DIR/ 2>/dev/null || true
-              rm -rf $APP_DIR
             fi
             
             # Verify release directory has files
@@ -181,31 +174,54 @@ jobs:
             
             # Update symlink (atomic operation for zero downtime)
             echo "🔗 Updating symlink..."
-            # Remove old symlink or directory if it exists
-            if [ -L "$APP_DIR" ] || [ -e "$APP_DIR" ]; then
-              rm -rf $APP_DIR
-            fi
-            # Create parent directory if needed
-            mkdir -p $(dirname $APP_DIR)
-            # Create symlink pointing directly to release directory
-            ln -sfn $RELEASE_DIR $APP_DIR
+            ln -sfn $RELEASE_DIR $APP_DIR/current || {
+              echo "❌ Failed to update symlink"
+              exit 1
+            }
             
             # Cleanup
             echo "🧹 Cleaning up..."
-            rm -f $ARCHIVE
+            rm -f $ARCHIVE || {
+              echo "⚠️  Failed to remove archive, but continuing..."
+            }
             
-            # Keep only last 5 releases
-            cd ${{ env.RELEASES_DIR }}
-            ls -dt */ 2>/dev/null | grep -E '^[0-9]{8}_[0-9]{6}/$' | tail -n +6 | xargs -r rm -rf
-            echo "✅ Kept last 5 releases"
+            # Keep only last 5 releases (disable error handling for cleanup)
+            set +e
+            if [ -d "${{ env.RELEASES_DIR }}" ]; then
+              cd "${{ env.RELEASES_DIR }}" 2>/dev/null
+              OLD_RELEASES=$(ls -t 2>/dev/null | tail -n +6 2>/dev/null)
+              if [ -n "$OLD_RELEASES" ]; then
+                echo "$OLD_RELEASES" | while read -r dir; do
+                  if [ -n "$dir" ] && [ -d "$dir" ]; then
+                    rm -rf "$dir" 2>/dev/null || true
+                  fi
+                done
+                echo "✅ Kept last 5 releases"
+              else
+                echo "ℹ️  No old releases to clean up"
+              fi
+            fi
             
             # Keep only last 3 backups
-            ls -dt backup_* 2>/dev/null | tail -n +4 | xargs -r rm -rf
-            echo "✅ Kept last 3 backups"
+            if [ -d "$APP_DIR" ]; then
+              cd "$APP_DIR" 2>/dev/null
+              OLD_BACKUPS=$(ls -dt backup_* 2>/dev/null | tail -n +4 2>/dev/null)
+              if [ -n "$OLD_BACKUPS" ]; then
+                echo "$OLD_BACKUPS" | while read -r dir; do
+                  if [ -n "$dir" ] && [ -d "$dir" ]; then
+                    rm -rf "$dir" 2>/dev/null || true
+                  fi
+                done
+                echo "✅ Kept last 3 backups"
+              else
+                echo "ℹ️  No old backups to clean up"
+              fi
+            fi
+            set -e
             
             echo "🎉 Deployment completed successfully!"
             echo "📍 Release: $RELEASE_DIR"
-            echo "📍 Symlink: $APP_DIR -> $RELEASE_DIR"
+            echo "📍 Symlink: $APP_DIR/current -> $RELEASE_DIR"
           ENDSSH
 
       - name: 🧹 Cleanup
@@ -236,7 +252,7 @@ jobs:
           ssh -i ~/.ssh/deploy_key \
             -p ${{ secrets.SSH_PORT || '22' }} \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            'ls -la ${{ env.APP_DIR }} && echo "✅ Deployment directory exists"'
+            'ls -la ${{ env.APP_DIR }}/current && echo "✅ Deployment symlink exists"'
 
       - name: 🏥 Health check
         run: |
