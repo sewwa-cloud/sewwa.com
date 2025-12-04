@@ -11,15 +11,15 @@ export const SITE: Record<string, string> = {
 	/**
 	 * Site-wide title
 	 */
-	title: 'Blog',
+	title: 'SEWWA',
 	/**
 	 * Used on index page and as a fallback if no title is set
 	 */
-	titleDefault: 'Blog - Sewwa',
+	titleDefault: 'SEWWA - SEO Tools Collection',
 	/**
 	 * Used in meta tags, RSS feed, and other places
 	 */
-	description: 'Blog with clean design, extensive code syntax highlighting, and focus on typography.',
+	description: 'A collection of SEO-related tools to help you optimize your website and improve your search engine rankings.',
 	/**
 	 * Language used in the <html> tag
 	 */
@@ -79,7 +79,11 @@ export const FRONTMATTER_TAGS = new Map(
 		['Coding', 'coding'] as const,
 		['MDX', 'mdx'] as const,
 		['Open Source', 'open-source'] as const,
-		['서울', '서울'] as const,
+		['CSS', 'css'] as const,
+		['Web Development', 'web-development'] as const,
+		['Tools', 'tools'] as const,
+		['Design', 'design'] as const,
+		['Frontend', 'frontend'] as const,
 	],
 )
 
