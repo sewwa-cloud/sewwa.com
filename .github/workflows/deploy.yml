@@ -122,12 +122,28 @@ jobs:
             
             echo "📦 Deploying to: $RELEASE_DIR"
             
-            # Create release directory
+            # Create release directory (clean if exists)
+            if [ -d "$RELEASE_DIR" ]; then
+              rm -rf "$RELEASE_DIR"
+            fi
             mkdir -p $RELEASE_DIR
             
-            # Extract archive
+            # Extract archive to temporary location
+            TEMP_EXTRACT_DIR=$(mktemp -d)
             echo "📂 Extracting archive..."
-            tar -xzf $ARCHIVE -C $RELEASE_DIR
+            tar -xzf $ARCHIVE -C $TEMP_EXTRACT_DIR
+            
+            # Verify extraction was successful
+            if [ ! -d "$TEMP_EXTRACT_DIR/dist" ]; then
+              echo "❌ Error: Archive extraction failed - dist directory not found"
+              rm -rf $TEMP_EXTRACT_DIR
+              exit 1
+            fi
+            
+            # Move all files from dist/ to release directory
+            echo "📦 Moving files to release directory..."
+            mv $TEMP_EXTRACT_DIR/dist/* $RELEASE_DIR/
+            rm -rf $TEMP_EXTRACT_DIR
             
             # Create directories
             mkdir -p ${{ env.RELEASES_DIR }}
@@ -152,14 +168,27 @@ jobs:
               rm -rf $APP_DIR
             fi
             
+            # Verify release directory has files
+            if [ ! "$(ls -A $RELEASE_DIR)" ]; then
+              echo "❌ Error: Release directory is empty"
+              exit 1
+            fi
+            
+            # Set proper permissions BEFORE creating symlink
+            echo "🔐 Setting permissions..."
+            chown -R www-data:www-data "$RELEASE_DIR" 2>/dev/null || true
+            chmod -R 755 "$RELEASE_DIR"
+            
             # Update symlink (atomic operation for zero downtime)
             echo "🔗 Updating symlink..."
-            ln -sfn $RELEASE_DIR/dist $APP_DIR
-            
-            # Set proper permissions
-            echo "🔐 Setting permissions..."
-            chown -R www-data:www-data $RELEASE_DIR/dist 2>/dev/null || true
-            chmod -R 755 $RELEASE_DIR/dist
+            # Remove old symlink or directory if it exists
+            if [ -L "$APP_DIR" ] || [ -e "$APP_DIR" ]; then
+              rm -rf $APP_DIR
+            fi
+            # Create parent directory if needed
+            mkdir -p $(dirname $APP_DIR)
+            # Create symlink pointing directly to release directory
+            ln -sfn $RELEASE_DIR $APP_DIR
             
             # Cleanup
             echo "🧹 Cleaning up..."
@@ -175,8 +204,8 @@ jobs:
             echo "✅ Kept last 3 backups"
             
             echo "🎉 Deployment completed successfully!"
-            echo "📍 Release: $RELEASE_DIR/dist"
-            echo "📍 Symlink: $APP_DIR -> $RELEASE_DIR/dist"
+            echo "📍 Release: $RELEASE_DIR"
+            echo "📍 Symlink: $APP_DIR -> $RELEASE_DIR"
           ENDSSH
 
       - name: 🧹 Cleanup

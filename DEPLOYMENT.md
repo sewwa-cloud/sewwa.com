@@ -202,8 +202,13 @@ ARCHIVE="/tmp/deploy_manual.tar.gz"
 # Create release directory
 mkdir -p $RELEASE_DIR
 
-# Extract archive
-tar -xzf $ARCHIVE -C $RELEASE_DIR
+# Extract archive to temporary location
+TEMP_EXTRACT_DIR=$(mktemp -d)
+tar -xzf $ARCHIVE -C $TEMP_EXTRACT_DIR
+
+# Move all files from dist/ to release directory
+mv $TEMP_EXTRACT_DIR/dist/* $RELEASE_DIR/
+rm -rf $TEMP_EXTRACT_DIR
 
 # Backup current (if exists)
 if [ -L "$APP_DIR" ]; then
@@ -213,13 +218,13 @@ if [ -L "$APP_DIR" ]; then
   cp -al $CURRENT_RELEASE/* $BACKUP_DIR/ 2>/dev/null || true
 fi
 
+# Set permissions
+chown -R www-data:www-data $RELEASE_DIR
+chmod -R 755 $RELEASE_DIR
+
 # Update symlink
 mkdir -p $(dirname $APP_DIR)
-ln -sfn $RELEASE_DIR/dist $APP_DIR
-
-# Set permissions
-chown -R www-data:www-data $RELEASE_DIR/dist
-chmod -R 755 $RELEASE_DIR/dist
+ln -sfn $RELEASE_DIR $APP_DIR
 
 # Cleanup
 rm -f $ARCHIVE
@@ -255,7 +260,7 @@ PREVIOUS_RELEASE=$(ls -dt $RELEASES_DIR/*/ | grep -E '[0-9]{8}_[0-9]{6}' | sed -
 
 if [ -n "$PREVIOUS_RELEASE" ]; then
   echo "Rolling back to: $PREVIOUS_RELEASE"
-  ln -sfn $PREVIOUS_RELEASE/dist $APP_DIR
+  ln -sfn $PREVIOUS_RELEASE $APP_DIR
   echo "✅ Rollback complete!"
 else
   echo "❌ No previous release found"
@@ -271,7 +276,7 @@ APP_DIR="/var/www/sewwa.com/html"
 RELEASE_DIR="/var/www/sewwa.com/html/releases/20250101_120000"  # Replace with actual timestamp
 
 if [ -d "$RELEASE_DIR" ]; then
-  ln -sfn $RELEASE_DIR/dist $APP_DIR
+  ln -sfn $RELEASE_DIR $APP_DIR
   echo "✅ Rolled back to: $RELEASE_DIR"
 else
   echo "❌ Release directory not found: $RELEASE_DIR"
