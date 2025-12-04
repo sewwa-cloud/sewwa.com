@@ -45,7 +45,7 @@ The deployment uses a **release-based, zero-downtime** strategy:
 3. Proper directory structure:
    ```
    /var/www/sewwa.com/
-   ├── blog/                  # Symlink to current release
+   ├── html/                  # Symlink to current release
    │   ├── releases/          # Release directories
    │   │   ├── 20250101_120000/
    │   │   ├── 20250101_130000/
@@ -56,7 +56,7 @@ The deployment uses a **release-based, zero-downtime** strategy:
 
 ### Required Permissions
 
-- SSH user must have write permissions to `/var/www/sewwa.com/blog/`
+- SSH user must have write permissions to `/var/www/sewwa.com/html/`
 - Nginx must have read permissions to the blog directory
 - User should be able to create directories and symlinks
 
@@ -195,8 +195,8 @@ ssh user@your-server
 
 # Variables
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-RELEASE_DIR="/var/www/sewwa.com/blog/releases/$TIMESTAMP"
-APP_DIR="/var/www/sewwa.com/blog"
+RELEASE_DIR="/var/www/sewwa.com/html/releases/$TIMESTAMP"
+APP_DIR="/var/www/sewwa.com/html"
 ARCHIVE="/tmp/deploy_manual.tar.gz"
 
 # Create release directory
@@ -208,7 +208,7 @@ tar -xzf $ARCHIVE -C $RELEASE_DIR
 # Backup current (if exists)
 if [ -L "$APP_DIR" ]; then
   CURRENT_RELEASE=$(readlink -f $APP_DIR)
-  BACKUP_DIR="/var/www/sewwa.com/blog/releases/backup_$(date +%Y%m%d_%H%M%S)"
+  BACKUP_DIR="/var/www/sewwa.com/html/releases/backup_$(date +%Y%m%d_%H%M%S)"
   mkdir -p $BACKUP_DIR
   cp -al $CURRENT_RELEASE/* $BACKUP_DIR/ 2>/dev/null || true
 fi
@@ -234,21 +234,21 @@ If you need to rollback to a previous release:
 ### Step 1: List Available Releases
 
 ```bash
-ssh user@your-server 'ls -lt /var/www/sewwa.com/blog/releases'
+ssh user@your-server 'ls -lt /var/www/sewwa.com/html/releases'
 ```
 
 ### Step 2: Check Current Release
 
 ```bash
-ssh user@your-server 'readlink -f /var/www/sewwa.com/blog'
+ssh user@your-server 'readlink -f /var/www/sewwa.com/html'
 ```
 
 ### Step 3: Rollback to Previous Release
 
 ```bash
 ssh user@your-server << 'EOF'
-APP_DIR="/var/www/sewwa.com/blog"
-RELEASES_DIR="/var/www/sewwa.com/blog/releases"
+APP_DIR="/var/www/sewwa.com/html"
+RELEASES_DIR="/var/www/sewwa.com/html/releases"
 
 # Get the second most recent release (assuming first is current)
 PREVIOUS_RELEASE=$(ls -dt $RELEASES_DIR/*/ | grep -E '[0-9]{8}_[0-9]{6}' | sed -n '2p')
@@ -267,8 +267,8 @@ EOF
 
 ```bash
 ssh user@your-server << 'EOF'
-APP_DIR="/var/www/sewwa.com/blog"
-RELEASE_DIR="/var/www/sewwa.com/blog/releases/20250101_120000"  # Replace with actual timestamp
+APP_DIR="/var/www/sewwa.com/html"
+RELEASE_DIR="/var/www/sewwa.com/html/releases/20250101_120000"  # Replace with actual timestamp
 
 if [ -d "$RELEASE_DIR" ]; then
   ln -sfn $RELEASE_DIR/dist $APP_DIR
@@ -334,7 +334,7 @@ git push
    ```
 2. Verify symlink exists:
    ```bash
-   ls -la /var/www/sewwa.com/blog
+   ls -la /var/www/sewwa.com/html
    ```
 3. Check Nginx error logs:
    ```bash
@@ -348,11 +348,11 @@ git push
 **Solution:**
 ```bash
 # Set proper ownership
-sudo chown -R $USER:www-data /var/www/sewwa.com/blog/
+sudo chown -R $USER:www-data /var/www/sewwa.com/html/
 
 # Set proper permissions
-sudo chmod -R 755 /var/www/sewwa.com/blog/
-sudo chmod -R 775 /var/www/sewwa.com/blog/releases/
+sudo chmod -R 755 /var/www/sewwa.com/html/
+sudo chmod -R 775 /var/www/sewwa.com/html/releases/
 ```
 
 ### Site Not Updating After Deployment
@@ -362,7 +362,7 @@ sudo chmod -R 775 /var/www/sewwa.com/blog/releases/
 **Solution:**
 1. Verify symlink points to latest release:
    ```bash
-   readlink -f /var/www/sewwa.com/blog
+   readlink -f /var/www/sewwa.com/html
    ```
 2. Clear Nginx cache (if enabled)
 3. Hard refresh browser (Ctrl+F5 or Cmd+Shift+R)
@@ -375,11 +375,11 @@ sudo chmod -R 775 /var/www/sewwa.com/blog/releases/
 #### 1. Create Directory Structure
 
 ```bash
-sudo mkdir -p /var/www/sewwa.com/blog/releases
-sudo mkdir -p /var/www/sewwa.com/blog/logs
-sudo chown -R $USER:www-data /var/www/sewwa.com/blog/
-sudo chmod -R 755 /var/www/sewwa.com/blog/
-sudo chmod -R 775 /var/www/sewwa.com/blog/releases/
+sudo mkdir -p /var/www/sewwa.com/html/releases
+sudo mkdir -p /var/www/sewwa.com/html/logs
+sudo chown -R $USER:www-data /var/www/sewwa.com/html/
+sudo chmod -R 755 /var/www/sewwa.com/html/
+sudo chmod -R 775 /var/www/sewwa.com/html/releases/
 ```
 
 #### 2. Configure Nginx
@@ -390,17 +390,17 @@ Create or update Nginx configuration:
 server {
     listen 80;
     server_name www.sewwa.com;
-    root /var/www/sewwa.com;
+    root /var/www/sewwa.com/html;
+    index index.html;
     
-    location /blog {
-        alias /var/www/sewwa.com/blog;
-        try_files $uri $uri/ /blog/index.html;
-        
-        # Cache static assets
-        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-            expires 1y;
-            add_header Cache-Control "public, immutable";
-        }
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    
+    # Cache static assets
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
     }
 }
 ```
@@ -427,22 +427,22 @@ After deployment, verify:
 
 1. **Check Deployment Directory:**
    ```bash
-   ls -la /var/www/sewwa.com/blog
+   ls -la /var/www/sewwa.com/html
    ```
 
 2. **Verify Symlink:**
    ```bash
-   readlink -f /var/www/sewwa.com/blog
+   readlink -f /var/www/sewwa.com/html
    ```
 
 3. **Check File Permissions:**
    ```bash
-   ls -la /var/www/sewwa.com/blog/releases/
+   ls -la /var/www/sewwa.com/html/releases/
    ```
 
 4. **Test Site:**
    ```bash
-   curl -I https://www.sewwa.com/blog/
+   curl -I https://www.sewwa.com/
    ```
 
 5. **View Deployment Logs:**
@@ -455,7 +455,7 @@ After deployment, verify:
 View latest deployment:
 
 ```bash
-ssh user@your-server 'ls -lt /var/www/sewwa.com/blog/releases/ | head -5'
+ssh user@your-server 'ls -lt /var/www/sewwa.com/html/releases/ | head -5'
 ```
 
 ### View Recent Deployments
@@ -472,7 +472,7 @@ Set up monitoring (optional):
 
 ```bash
 # Simple health check script
-curl -f https://www.sewwa.com/blog/ || echo "Site is down!"
+curl -f https://www.sewwa.com/ || echo "Site is down!"
 ```
 
 ## Best Practices

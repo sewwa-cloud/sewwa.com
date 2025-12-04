@@ -32,7 +32,6 @@ export default defineConfig({
 		],
 	},
 	output: 'static',
-	base: '/blog',
 	trailingSlash: 'always',
 	site: 'https://www.sewwa.com',
 	integrations: [expressiveCode(), mdx(), sitemap(), pagefindIntegration(), react()],

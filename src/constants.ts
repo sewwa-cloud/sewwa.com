@@ -7,7 +7,7 @@ export const SITE: Record<string, string> = {
 	/**
 	 * Base URL of your site, used in sitemap generation
 	 */
-	url: 'https://www.sewwa.com/blog',
+	url: 'https://www.sewwa.com',
 	/**
 	 * Site-wide title
 	 */

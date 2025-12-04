@@ -1,9 +1,6 @@
 name: Deploy Blog to Vultr
 
 on:
-  push:
-    branches:
-      - main  # Auto-deploy on push to main
   release:
     types: [published]  # Auto-deploy on release
   workflow_dispatch: # Manual trigger from GitHub UI
@@ -11,9 +8,9 @@ on:
 env:
   NODE_VERSION: '20'
   APP_NAME: 'blog'
-  APP_DIR: '/var/www/sewwa.com/blog'
-  RELEASES_DIR: '/var/www/sewwa.com/blog/releases'
-  LOGS_DIR: '/var/www/sewwa.com/blog/logs'
+  APP_DIR: '/var/www/sewwa.com/html'
+  RELEASES_DIR: '/var/www/sewwa.com/html/releases'
+  LOGS_DIR: '/var/www/sewwa.com/html/logs'
 
 jobs:
   # Job 1: Lint
@@ -220,7 +217,7 @@ jobs:
           # Try to curl the endpoint
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
             --max-time 30 \
-            https://www.sewwa.com/blog/ || echo "000")
+            https://www.sewwa.com/ || echo "000")
           
           if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "301" ] || [ "$RESPONSE" = "302" ]; then
             echo "✅ Health check passed! (Status: $RESPONSE)"
@@ -255,16 +252,16 @@ jobs:
           echo "- Deploy: \`${{ needs.deploy.result }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- Verify: \`${{ needs.verify.result }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**URL:** https://www.sewwa.com/blog" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** https://www.sewwa.com" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📝 Quick Commands" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
           echo "# Check deployment directory" >> $GITHUB_STEP_SUMMARY
-          echo "ssh user@server 'ls -la /var/www/sewwa.com/blog'" >> $GITHUB_STEP_SUMMARY
+          echo "ssh user@server 'ls -la /var/www/sewwa.com/html'" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "# View releases" >> $GITHUB_STEP_SUMMARY
-          echo "ssh user@server 'ls -lt /var/www/sewwa.com/blog/releases'" >> $GITHUB_STEP_SUMMARY
+          echo "ssh user@server 'ls -lt /var/www/sewwa.com/html/releases'" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "# Rollback to previous release (example)" >> $GITHUB_STEP_SUMMARY
-          echo "ssh user@server 'cd /var/www/sewwa.com/blog/releases && ls -dt */ | head -2'" >> $GITHUB_STEP_SUMMARY
+          echo "ssh user@server 'cd /var/www/sewwa.com/html/releases && ls -dt */ | head -2'" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

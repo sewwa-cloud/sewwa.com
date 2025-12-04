@@ -121,32 +121,25 @@ The deployment workflow consists of 5 jobs:
 
 ### Nginx Configuration
 
-Add the following location block to your Nginx server configuration for `www.sewwa.com`:
+Configure your Nginx server block for `www.sewwa.com` to serve the blog at the root:
 
 ```nginx
-location /blog {
-    alias /var/www/sewwa.com/blog;
-    try_files $uri $uri/ /blog/index.html;
+server {
+    listen 80;
+    server_name www.sewwa.com;
+    root /var/www/sewwa.com/html;
+    index index.html;
+    
+    # Serve static files
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
     
     # Cache static assets
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
         expires 1y;
         add_header Cache-Control "public, immutable";
     }
-}
-```
-
-Ensure your server block includes the root directory:
-
-```nginx
-server {
-    listen 80;
-    server_name www.sewwa.com;
-    root /var/www/sewwa.com;
-    
-    # ... other configurations ...
-    
-    include /etc/nginx/conf.d/blog.conf;  # or add the location block directly
 }
 ```
 
