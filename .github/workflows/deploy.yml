@@ -185,34 +185,34 @@ jobs:
               echo "⚠️  Failed to remove archive, but continuing..."
             }
             
-            # Keep only last 5 releases (disable error handling for cleanup)
+            # Keep only last 2 releases (disable error handling for cleanup)
             set +e
             if [ -d "${{ env.RELEASES_DIR }}" ]; then
               cd "${{ env.RELEASES_DIR }}" 2>/dev/null
-              OLD_RELEASES=$(ls -t 2>/dev/null | tail -n +6 2>/dev/null)
+              OLD_RELEASES=$(ls -t 2>/dev/null | tail -n +3 2>/dev/null)
               if [ -n "$OLD_RELEASES" ]; then
                 echo "$OLD_RELEASES" | while read -r dir; do
                   if [ -n "$dir" ] && [ -d "$dir" ]; then
                     rm -rf "$dir" 2>/dev/null || true
                   fi
                 done
-                echo "✅ Kept last 5 releases"
+                echo "✅ Kept last 2 releases"
               else
                 echo "ℹ️  No old releases to clean up"
               fi
             fi
-            
-            # Keep only last 3 backups
+
+            # Keep only last 2 backups
             if [ -d "$APP_DIR" ]; then
               cd "$APP_DIR" 2>/dev/null
-              OLD_BACKUPS=$(ls -dt backup_* 2>/dev/null | tail -n +4 2>/dev/null)
+              OLD_BACKUPS=$(ls -dt backup_* 2>/dev/null | tail -n +3 2>/dev/null)
               if [ -n "$OLD_BACKUPS" ]; then
                 echo "$OLD_BACKUPS" | while read -r dir; do
                   if [ -n "$dir" ] && [ -d "$dir" ]; then
                     rm -rf "$dir" 2>/dev/null || true
                   fi
                 done
-                echo "✅ Kept last 3 backups"
+                echo "✅ Kept last 2 backups"
               else
                 echo "ℹ️  No old backups to clean up"
               fi
