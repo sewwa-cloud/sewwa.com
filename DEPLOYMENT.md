@@ -53,7 +53,7 @@ The deployment uses a **release-based, zero-downtime** strategy:
    │   │   └── ...
    │   ├── backup_*/          # Backup directories
    │   └── logs/              # Deployment logs (optional)
-   └── color-converter/       # Other applications (example)
+   └── color-palette/       # Other applications (example)
    ```
 
 ### Required Permissions
