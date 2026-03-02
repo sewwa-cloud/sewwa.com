@@ -1,0 +1,40 @@
+---
+description: Blog post and MDX content conventions
+globs: "content/**/*.mdx"
+alwaysApply: false
+---
+
+# MDX Content Standards
+
+## Blog Post Structure
+
+- Folder: `content/blog/YYYY-MM-DD--slug/index.mdx`
+- `assistant` script: `npm run assistant` creates posts with this format
+
+## Frontmatter (required)
+
+```yaml
+---
+title: "Post Title"
+slug: "kebab-case-slug"
+description: "SEO description"
+date: YYYY-MM-DD
+lastUpdated: YYYY-MM-DD
+tags:
+  - TagName
+  - AnotherTag
+---
+```
+
+- `slug`: kebab-case, no leading/trailing slashes, no spaces or dots
+- `tags`: use values from `FRONTMATTER_TAGS` in `@constants` (General, Coding, MDX, etc.)
+
+## Optional Frontmatter
+
+- `image`: optional og:image path
+- `searchIndex`: boolean, default true (pagefind indexing)
+
+## MDX Directives
+
+- Asides: `:::note`, `:::tip`, `:::caution`, `:::danger` (with optional title: `:::note Custom Title`)
+- Playground: `@lekoarts/remark-sandpack` with `Playground` component

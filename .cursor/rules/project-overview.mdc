@@ -1,0 +1,43 @@
+---
+description: Core project structure, path aliases, and tech stack
+alwaysApply: true
+---
+
+# Blog Project Overview
+
+**Tech stack:** Astro 5, TypeScript (strict), Tailwind 4, MDX, React (Sandpack only), Pagefind
+
+## Path Aliases
+
+Use these instead of relative paths when importing:
+
+- `@constants` → `src/constants.ts`
+- `@utils` → `src/utils.ts`
+- `@components/*` → `src/components/*`
+- `@layouts/*` → `src/layouts/*`
+- `@assets/*` → `src/assets/*`
+- `@styles/*` → `src/styles/*`
+
+```astro
+// ✅ GOOD
+import Seo from '@components/seo.astro'
+import { SITE } from '@constants'
+import { defaultDateFormat } from '@utils'
+
+// ❌ BAD
+import Seo from '../../components/seo.astro'
+```
+
+## Project Structure
+
+- `src/components/` — Astro components; `a11y/` for accessibility components
+- `src/layouts/` — Layout wrappers
+- `src/pages/` — File-based routing; `[blog].astro` for dynamic routes
+- `content/blog/` — Blog posts: `YYYY-MM-DD--slug/index.mdx`
+- `src/constants.ts` — Site-wide config (SITE, HEADER, FRONTMATTER_TAGS, etc.)
+- `src/utils.ts` — Shared utilities
+
+## Formatting
+
+- Prettier: tabs, singleQuote, semi, trailingComma es5, printWidth 100
+- Imports: always at top of file (no inline imports)

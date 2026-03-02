@@ -24,7 +24,25 @@ const posts = sortAsc(await getCollection('blog')).slice(0, POSTS_TO_SHOW)
 ---
 
 <Layout>
-	<Seo slot="seo" />
+	<Seo
+		slot="seo"
+		schema={[
+			{
+				'@context': 'https://schema.org',
+				'@type': 'Organization',
+				name: SITE.title,
+				url: SITE.url,
+				description: SITE.description,
+			},
+			{
+				'@context': 'https://schema.org',
+				'@type': 'WebSite',
+				name: SITE.titleDefault,
+				url: SITE.url,
+				description: SITE.description,
+			},
+		]}
+	/>
 	<SkipNavContent>
 		<h1 class="sr-only">{SITE.title}</h1>
 		<Prose>
