@@ -1,0 +1,36 @@
+---
+description: TypeScript conventions for this project
+globs: "**/*.ts"
+alwaysApply: false
+---
+
+# TypeScript Standards
+
+## Imports
+
+- Use `import type` for type-only imports
+- Prefer `node:` prefix for Node built-ins: `node:path`, `node:fs/promises`
+
+```typescript
+// ✅ GOOD
+import type { FrontmatterTag } from '@constants'
+import path from 'node:path'
+
+// ❌ BAD
+import path from 'path'
+```
+
+## Types
+
+- Avoid `any`; use `unknown` or proper types when needed
+- ESLint: `no-explicit-any` is warn; `argsIgnorePattern: '^_'` for unused vars
+
+## Utility Types
+
+- Use `Record<Variant, string>` for variant maps
+- Use `MapKey<T>` for map key extraction: `type FrontmatterTag = MapKey<typeof FRONTMATTER_TAGS>`
+
+## Constants
+
+- Centralize in `@constants`; use `as const` for enum-like arrays
+- Use `satisfies` for plugin config objects when types don't match exactly

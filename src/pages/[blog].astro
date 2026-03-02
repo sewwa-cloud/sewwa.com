@@ -27,10 +27,25 @@ export async function getStaticPaths() {
 const { entry } = Astro.props
 const { data: post } = entry
 const { Content } = await render(entry)
+
+const articleUrl = new URL(`${post.slug}/`, SITE.url)
+const articleImage = new URL(post.image || SITE.defaultOgImage, SITE.url)
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: post.title,
+	description: post.description,
+	image: articleImage.href,
+	url: articleUrl.href,
+	datePublished: isoDateFormat(post.date),
+	dateModified: isoDateFormat(post.lastUpdated),
+	author: { '@type': 'Person', name: SITE.defaultAuthor },
+	publisher: { '@type': 'Organization', name: SITE.title, url: SITE.url },
+}
 ---
 
 <Layout>
-	<Seo slot="seo" forceTitle={post.title} description={post.description} image={post.image}>
+	<Seo slot="seo" forceTitle={post.title} description={post.description} image={post.image} ogType="article" schema={articleSchema}>
 		<meta name="twitter:label1" value="Author" />
 		<meta name="twitter:data1" data-pagefind-meta="author" value={SITE.defaultAuthor} />
 		<meta name="twitter:label2" value="Tags" />
