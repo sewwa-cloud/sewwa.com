@@ -84,6 +84,9 @@ export const FRONTMATTER_TAGS = new Map(
 		['Tools', 'tools'] as const,
 		['Design', 'design'] as const,
 		['Frontend', 'frontend'] as const,
+		['SEO', 'seo'] as const,
+		['JSON-LD', 'json-ld'] as const,
+		['Schema.org', 'schema-org'] as const,
 	],
 )
 

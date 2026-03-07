@@ -1,0 +1,12 @@
+[
+	{
+		"name": "Sewwa Schema Generator",
+		"url": "https://www.sewwa.com/schema-generator",
+		"description": "Create JSON-LD structured data for your website. Choose a schema type, fill in the form, and copy the generated code to your site."
+	},
+	{
+		"name": "Sewwa Color Palette",
+		"url": "https://www.sewwa.com/color-palette",
+		"description": "Create beautiful color palettes instantly. Convert colors between HEX, RGB, HSL formats and export to CSS variables ready for your projects."
+	}
+]
