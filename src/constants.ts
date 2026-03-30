@@ -77,16 +77,17 @@ export const FRONTMATTER_TAGS = new Map(
 	[
 		['General', 'general'] as const,
 		['Coding', 'coding'] as const,
-		['MDX', 'mdx'] as const,
-		['Open Source', 'open-source'] as const,
 		['CSS', 'css'] as const,
-		['Web Development', 'web-development'] as const,
-		['Tools', 'tools'] as const,
 		['Design', 'design'] as const,
 		['Frontend', 'frontend'] as const,
-		['SEO', 'seo'] as const,
+		['JavaScript', 'javascript'] as const,
 		['JSON-LD', 'json-ld'] as const,
+		['MDX', 'mdx'] as const,
+		['Open Source', 'open-source'] as const,
 		['Schema.org', 'schema-org'] as const,
+		['SEO', 'seo'] as const,
+		['Tools', 'tools'] as const,
+		['Web Development', 'web-development'] as const,
 	],
 )
 
