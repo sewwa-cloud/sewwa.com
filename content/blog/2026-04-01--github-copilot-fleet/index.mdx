@@ -1,0 +1,231 @@
+---
+title: "GitHub Copilot Fleet: Work with Multiple Files in Parallel"
+slug: "github-copilot-fleet-multiple-files-parallel"
+description: "Learn how to use GitHub Copilot's /fleet command to work on multiple files simultaneously. Perfect for web developers refactoring code, generating documentation, and implementing features across API, UI, and tests."
+date: 2026-04-01
+lastUpdated: 2026-04-01
+tags:
+  - Web Development
+  - Developer Tools
+  - Productivity
+  - AI
+  - GitHub
+---
+
+What if GitHub Copilot CLI could work on five files at the same time instead of one? That's where `/fleet` comes in.
+
+`/fleet` is a slash command in Copilot CLI that enables Copilot to simultaneously work with multiple subagents in parallel. Instead of working through tasks sequentially, Copilot now has a behind-the-scenes orchestrator that plans and breaks your objective into independent work items — dispatching multiple agents to execute them simultaneously.
+
+## How It Works
+
+When you run `/fleet` with a prompt, the orchestrator:
+
+1. **Decomposes** your task into discrete work items with dependencies
+2. **Identifies** which items can run in parallel vs. which must wait
+3. **Dispatches** independent items as background sub-agents simultaneously
+4. **Polls** for completion, then dispatches the next wave
+5. **Verifies** outputs and synthesizes final artifacts
+
+Each sub-agent gets its own context window but shares the same filesystem. They can't talk to each other directly; only the orchestrator coordinates.
+
+Think of it as a project lead who assigns work to a team, checks in on progress, and assembles the final deliverable.
+
+## Getting Started
+
+Start fleet mode by running:
+
+```bash
+/fleet Refactor the auth module, update tests, and fix the related docs in the folder docs/auth/
+```
+
+That's it. The orchestrator takes your objective, figures out what can be parallelized, and starts dispatching.
+
+**Non-interactive mode:**
+```bash
+copilot -p "/fleet <YOUR TASK>" --no-ask-user
+```
+
+The `--no-ask-user` flag is required for non-interactive mode since there's no way to respond to prompts.
+
+## Write Prompts that Parallelize Well
+
+The quality of your `/fleet` prompt determines how effectively work gets distributed. The key is giving the orchestrator enough structure to cleanly break down your task.
+
+### 1. Be Specific About Deliverables
+
+Map every work item to a concrete artifact like a file, test suite, or documentation section. Vague prompts lead to sequential execution because the orchestrator can't identify independent pieces.
+
+**Instead of:**
+```bash
+/fleet Build the documentation
+```
+
+**Try:**
+```bash
+/fleet Create docs for the API module:
+- docs/authentication.md covering token flow and examples
+- docs/endpoints.md with request/response schemas for all REST endpoints
+- docs/errors.md with error codes and troubleshooting steps
+- docs/index.md linking to all three pages (depends on the others finishing first)
+```
+
+The second prompt gives the orchestrator four distinct deliverables — three can run in parallel, one depends on them.
+
+### 2. Set Explicit Boundaries
+
+Sub-agents work best when they know exactly where their scope starts and ends. Include in your prompt:
+
+- **File or module boundaries**: Which directories or files each track owns
+- **Constraints**: What not to touch (e.g., no test changes, no dependency upgrades)
+- **Validation criteria**: Lint, type checks, tests that must pass
+
+**Example with boundaries:**
+```bash
+/fleet Implement feature flags in three tracks:
+1. API layer: add flag evaluation to src/api/middleware/ and include unit tests
+2. UI: wire toggle components in src/components/flags/ (no new dependencies)
+3. Config: add flag definitions to config/features.yaml and validate against schema
+
+Run independent tracks in parallel. No changes outside assigned directories.
+```
+
+### 3. Declare Dependencies
+
+If one piece of work depends on another, say so. The orchestrator will serialize those items and parallelize the rest.
+
+**Example:**
+```bash
+/fleet Migrate the database layer:
+1. Write new schema in migrations/005_users.sql
+2. Update the ORM models in src/models/user.ts (depends on 1)
+3. Update API handlers in src/api/users.ts (depends on 2)
+4. Write integration tests in tests/users.test.ts (depends on 2)
+
+Items 3 and 4 can run in parallel after item 2 completes.
+```
+
+## Use Custom Agents for Different Jobs
+
+Define specialized agents in `.github/agents/` and reference them in your `/fleet` prompt. Each agent can specify its own model, tools, and instructions.
+
+**Example custom agent:**
+```markdown
+# .github/agents/technical-writer.md
+---
+name: technical-writer
+description: Documentation specialist
+model: claude-sonnet-4
+tools: ["bash", "create", "edit", "view"]
+---
+You write clear, concise technical documentation. 
+Follow the project style guide in /docs/styleguide.md.
+```
+
+Then reference in your prompt:
+```bash
+/fleet Use @technical-writer.md for all docs tasks and the default agent for code changes.
+```
+
+This is useful when different tracks need different strengths — use a heavier model for complex logic, lighter one for boilerplate documentation.
+
+## Practical Examples for Web Developers
+
+### Example 1: Refactor Component Library
+```bash
+/fleet Refactor the component library:
+1. Update Button component in src/components/Button.tsx with new variants
+2. Update Button tests in tests/Button.test.tsx (depends on 1)
+3. Update Input component in src/components/Input.tsx with validation
+4. Update Input tests in tests/Input.test.tsx (depends on 3)
+5. Update documentation in docs/components.md (depends on 1, 3)
+
+Run 1+2 and 3+4 in parallel, then 5.
+```
+
+### Example 2: API Migration
+```bash
+/fleet Migrate API from REST to GraphQL:
+1. Create schema in api/schema.graphql
+2. Update resolvers in api/resolvers/ (depends on 1)
+3. Update client code in src/api/ (depends on 1)
+4. Update tests in tests/api/ (depends on 2, 3)
+5. Update documentation in docs/api.md (depends on 2, 3)
+```
+
+### Example 3: Feature Implementation
+```bash
+/fleet Implement user dashboard:
+1. Backend: Create API endpoints in api/dashboard/
+2. Frontend: Create components in src/components/dashboard/
+3. State management: Update store in src/store/dashboard.ts
+4. Tests: Create integration tests in tests/dashboard/ (depends on 1, 2, 3)
+5. Docs: Update user guide in docs/dashboard.md (depends on 2)
+
+Run 1, 2, 3 in parallel, then 4 and 5.
+```
+
+## Common Pitfalls to Avoid
+
+### 1. Partition Your Files
+
+Sub-agents share a filesystem with no file locking. If two agents write to the same file, the last one to finish wins — silently. No error, no merge, just an overwrite.
+
+**Fix:** Assign each agent distinct files. If multiple agents need to contribute to a single file:
+- Have each write to a temporary path, then let the orchestrator merge at the end
+- Set an explicit order for agents to follow
+
+### 2. Keep Prompts Self-Contained
+
+Sub-agents can't see the orchestrator's conversation history. When dispatched, they only receive a prompt that needs to include everything they need. If you've gathered useful context earlier, make sure your `/fleet` prompt includes it.
+
+### 3. Steering a Fleet in Progress
+
+After dispatching, send follow-up prompts to guide the orchestrator:
+- "Prioritize failing tests first, then complete remaining tasks."
+- "List active sub-agents and what each is currently doing."
+- "Mark done only when lint, type check, and all tests pass."
+
+## When to Use /fleet (And When Not To)
+
+`/fleet` shines when your task has natural parallelism — multiple files, independent modules, or separable concerns.
+
+**Perfect for:**
+- Refactoring across multiple files simultaneously
+- Generating documentation for several components at once
+- Implementing a feature that spans API, UI, and tests
+- Running independent code modifications that don't share state
+
+**Not ideal for:**
+- Strictly linear, single-file work → regular Copilot CLI prompts are simpler and just as fast
+
+Fleet adds coordination overhead, so it pays off when there's real work to distribute.
+
+## Verifying Subagents are Deploying
+
+Watch how the orchestrator deploys subagents — it's the fastest way to learn.
+
+**Quick checklist:**
+- **Decomposition appears**: Review the plan Copilot shares before starting — does it break work into multiple tracks?
+- **Background task UI confirms activity**: Run `/tasks` to inspect running background tasks
+- **Parallel progress appears**: Updates reference separate tracks moving at the same time
+
+If fleet doesn't seem to be parallelizing, try:
+```bash
+Decompose this into independent tracks first, then execute tracks in parallel. 
+Report each track separately with status and blockers.
+```
+
+## Conclusion
+
+`/fleet` is a powerful tool for web developers who want to work more efficiently. Key takeaways:
+
+1. **Start small** — Pick a task with clear outputs and obvious parallelism
+2. **Write structured prompts** — Specify deliverables, boundaries, and dependencies
+3. **Learn from observation** — Watch how the orchestrator decomposes work
+4. **Iterate** — Adjust prompts based on what you see
+
+Fleet is most useful when you treat it like a team, not a magic trick. The more you use it, the better you'll become at writing prompts that maximize parallel execution.
+
+---
+
+**Boost your development productivity** with SEWWA's free tools. Use the [Color Palette Generator](/color-palette) to maintain visual consistency when refactoring multiple components, and [Schema Generator](/schema-generator) to auto-generate structured data markup for your projects.
