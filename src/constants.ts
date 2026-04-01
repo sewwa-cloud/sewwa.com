@@ -76,18 +76,23 @@ export const HEADER: Header = {
 export const FRONTMATTER_TAGS = new Map(
 	[
 		['General', 'general'] as const,
+		['AI', 'ai'] as const,
 		['Coding', 'coding'] as const,
 		['CSS', 'css'] as const,
 		['Design', 'design'] as const,
+		['Developer Tools', 'developer-tools'] as const,
 		['Frontend', 'frontend'] as const,
+		['GitHub', 'github'] as const,
 		['JavaScript', 'javascript'] as const,
 		['JSON-LD', 'json-ld'] as const,
 		['MDX', 'mdx'] as const,
 		['Open Source', 'open-source'] as const,
+		['Productivity', 'productivity'] as const,
 		['Schema.org', 'schema-org'] as const,
 		['SEO', 'seo'] as const,
 		['Tools', 'tools'] as const,
 		['Web Development', 'web-development'] as const,
+		['Content Marketing', 'content-marketing'] as const,
 	],
 )
 
