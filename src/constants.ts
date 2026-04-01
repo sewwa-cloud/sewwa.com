@@ -15,11 +15,11 @@ export const SITE: Record<string, string> = {
 	/**
 	 * Used on index page and as a fallback if no title is set
 	 */
-	titleDefault: 'SEWWA - SEO Tools Collection',
+	titleDefault: 'SEWWA - Free SEO Tools & Guides | Schema Generator',
 	/**
 	 * Used in meta tags, RSS feed, and other places
 	 */
-	description: 'A collection of SEO-related tools to help you optimize your website and improve your search engine rankings.',
+	description: 'Free SEO tools and guides: JSON-LD Schema Generator, Color Palette, and expert SEO tips. No login required. Optimize your website with tools and strategies.',
 	/**
 	 * Language used in the <html> tag
 	 */
