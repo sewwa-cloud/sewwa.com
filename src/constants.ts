@@ -34,6 +34,9 @@ export const SITE: Record<string, string> = {
 	defaultAuthor: 'Sewwa',
 }
 
+/** Public contact email (About page, structured data). */
+export const CONTACT_EMAIL = 'hello@sewwa.com'
+
 interface Header {
 	internal: Array<{ title: string, url: string }>
 	external: Array<{ title: string, url: string, props?: Record<string, unknown> }>
