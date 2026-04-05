@@ -14,8 +14,11 @@ const tags = getTags(entries)
 
 <Layout>
 	<Seo slot="seo" title="Tags" />
-	<SkipNavContent>
-		<h2 class="font-medium text-xl md:text-2xl lg:text-3xl text-highlight">All tags</h2>
+	<SkipNavContent searchIndex={true}>
+		<span class="sr-only" data-pagefind-filter="section">Tags</span>
+		<h2 class="font-medium text-xl md:text-2xl lg:text-3xl text-highlight" data-pagefind-meta="title">
+			All tags
+		</h2>
 		<Spacer axis="vertical" size={12} />
 		<div class="flex gap-6 flex-col">
 			{

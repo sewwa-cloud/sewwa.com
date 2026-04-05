@@ -1,0 +1,183 @@
+---
+import { getCollection, render } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
+import Seo from '@components/seo.astro'
+import Layout from '@layouts/layout.astro'
+import Prose from '@components/prose.astro'
+import { SITE } from '@constants'
+import { defaultDateFormat, isoDateFormat } from '@utils'
+import SkipNavContent from '@components/a11y/skip-nav-content.astro'
+import Spacer from '@components/spacer.astro'
+import Aside from '@components/aside.astro'
+import TagLinks from '@components/tag-links.astro'
+import Playground from '@components/playground.astro'
+import ProgrammaticGuide from '@components/programmatic/programmatic-guide.astro'
+import { PROGRAMMATIC_ENTRIES } from '@data/programmatic/registry'
+import { programmaticPageJsonLd } from '@data/programmatic/seo-helpers'
+import type { ProgrammaticEntry } from '@data/programmatic/types'
+
+/** Pre-render every blog post and schema-guide URL at build time (static `dist/<slug>/index.html`). */
+export const prerender = true
+
+export async function getStaticPaths() {
+	const blogEntries = await getCollection('blog')
+	const blogSlugs = new Set(blogEntries.map((e) => e.data.slug))
+	for (const p of PROGRAMMATIC_ENTRIES) {
+		if (blogSlugs.has(p.urlSegment)) {
+			throw new Error(
+				`Slug collision: programmatic urlSegment "${p.urlSegment}" matches a blog post slug. Rename one of them.`,
+			)
+		}
+	}
+
+	const blogPaths = blogEntries.map((e) => ({
+		params: { slug: e.data.slug },
+		props: {
+			pageType: 'blog' as const,
+			blogEntry: e,
+		},
+	}))
+
+	const programmaticPaths = PROGRAMMATIC_ENTRIES.map((e) => ({
+		params: { slug: e.urlSegment },
+		props: {
+			pageType: 'programmatic' as const,
+			programmaticEntry: e,
+		},
+	}))
+
+	return [...blogPaths, ...programmaticPaths]
+}
+
+type Props =
+	| { pageType: 'blog'; blogEntry: CollectionEntry<'blog'> }
+	| { pageType: 'programmatic'; programmaticEntry: ProgrammaticEntry }
+
+const props = Astro.props as Props
+
+let articleSchema: Record<string, unknown> | undefined
+let seoTitle: string
+let seoDescription: string
+let seoImage: string | undefined
+let ogType: 'website' | 'article' = 'website'
+
+if (props.pageType === 'blog') {
+	const { data: post } = props.blogEntry
+	const articleUrl = new URL(`${post.slug}/`, SITE.url)
+	const articleImage = new URL(post.image || SITE.defaultOgImage, SITE.url)
+	articleSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'Article',
+		headline: post.title,
+		description: post.description,
+		image: articleImage.href,
+		url: articleUrl.href,
+		datePublished: isoDateFormat(post.date),
+		dateModified: isoDateFormat(post.lastUpdated),
+		author: { '@type': 'Person', name: SITE.defaultAuthor },
+		publisher: { '@type': 'Organization', name: SITE.title, url: SITE.url },
+	}
+	seoTitle = post.title
+	seoDescription = post.description
+	seoImage = post.image
+	ogType = 'article'
+}
+else {
+	const { programmaticEntry: pe } = props
+	articleSchema = programmaticPageJsonLd(pe)
+	seoTitle = pe.title
+	seoDescription = pe.description
+	seoImage = SITE.defaultOgImage
+	ogType = 'website'
+}
+
+const blogRender = props.pageType === 'blog' ? await render(props.blogEntry) : null
+const Content = blogRender?.Content
+---
+
+<Layout>
+	{
+		props.pageType === 'blog' ? (
+			<Seo
+				slot="seo"
+				forceTitle={seoTitle}
+				description={seoDescription}
+				image={seoImage}
+				ogType={ogType}
+				schema={articleSchema}
+			>
+				<meta name="twitter:label1" value="Author" />
+				<meta name="twitter:data1" data-pagefind-meta="author" value={SITE.defaultAuthor} />
+				<meta name="twitter:label2" value="Tags" />
+				<meta name="twitter:data2" value={props.blogEntry.data.tags.join(', ')} />
+				<meta
+					name="article:published_time"
+					data-pagefind-meta="published_time"
+					content={isoDateFormat(props.blogEntry.data.date)}
+				/>
+				<meta
+					name="article:modified_time"
+					data-pagefind-meta="modified_time"
+					content={isoDateFormat(props.blogEntry.data.lastUpdated)}
+				/>
+				<meta data-pagefind-meta="section" content="Blog" />
+			</Seo>
+		) : (
+			<Seo
+				slot="seo"
+				forceTitle={seoTitle}
+				description={seoDescription}
+				image={seoImage}
+				ogType={ogType}
+				schema={articleSchema}
+			>
+				<meta name="twitter:label1" content="Guide type" />
+				<meta
+					name="twitter:data1"
+					content={
+						props.programmaticEntry.kind === 'industry'
+							? 'Industry'
+							: props.programmaticEntry.kind === 'platform'
+								? 'Platform'
+								: 'Schema type'
+					}
+				/>
+				<meta data-pagefind-meta="section" content="Schema guides" />
+				<meta
+					data-pagefind-meta="guide_type"
+					content={
+						props.programmaticEntry.kind === 'industry'
+							? 'Industry'
+							: props.programmaticEntry.kind === 'platform'
+								? 'Platform'
+								: 'Schema type'
+					}
+				/>
+			</Seo>
+		)
+	}
+	{
+		props.pageType === 'blog' ? (
+			<SkipNavContent searchIndex={props.blogEntry.data.searchIndex}>
+				<Prose>
+					<p class="sr-only">
+						<span data-pagefind-filter="section">Blog</span>
+					</p>
+					<h1 class="mb-0!" data-pagefind-meta="title">
+						{props.blogEntry.data.title}
+					</h1>
+					<Spacer axis="vertical" size={4} />
+					<div class="text-faded">
+						{defaultDateFormat(props.blogEntry.data.date)} — <TagLinks tags={props.blogEntry.data.tags} />
+					</div>
+					<Spacer axis="vertical" size={12} />
+					{Content && <Content components={{ Aside, Playground }} />}
+				</Prose>
+			</SkipNavContent>
+		) : (
+			<SkipNavContent searchIndex={true}>
+				<ProgrammaticGuide entry={props.programmaticEntry} />
+			</SkipNavContent>
+		)
+	}
+</Layout>

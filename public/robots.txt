@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.sewwa.com/sitemap-index.xml
+Sitemap: https://www.sewwa.com/sitemap-blog.xml
+Sitemap: https://www.sewwa.com/sitemap-schema-guides.xml

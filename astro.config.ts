@@ -15,8 +15,13 @@ import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSlug from 'rehype-slug'
 import remarkDirective from 'remark-directive'
 import remarkSmartypants from 'remark-smartypants'
+import { SITE } from './src/constants'
+import { readBlogSlugSetFromContentDir } from './src/data/sitemap-blog-slugs'
+import { isExcludedFromMainSitemap } from './src/data/sitemap-filters'
 import { remarkAsides } from './src/remark'
 import { pagefindIntegration } from './src/utils'
+
+const blogSlugs = readBlogSlugSetFromContentDir()
 
 export default defineConfig({
 	experimental: {
@@ -30,10 +35,23 @@ export default defineConfig({
 			},
 		],
 	},
+	/** Fully static: every URL (blog + schema guides) is HTML in `dist/` after `astro build`—no server/runtime routes. */
 	output: 'static',
 	trailingSlash: 'always',
 	site: 'https://www.sewwa.com',
-	integrations: [expressiveCode(), mdx(), sitemap(), pagefindIntegration(), react()],
+	integrations: [
+		expressiveCode(),
+		mdx(),
+		sitemap({
+			customSitemaps: [
+				`${SITE.url.replace(/\/$/, '')}/sitemap-blog.xml`,
+				`${SITE.url.replace(/\/$/, '')}/sitemap-schema-guides.xml`,
+			],
+			filter: (page) => !isExcludedFromMainSitemap(page, blogSlugs),
+		}),
+		pagefindIntegration(),
+		react(),
+	],
 	vite: {
 		plugins: [tailwindcss()],
 	},

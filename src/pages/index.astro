@@ -11,7 +11,7 @@ import Spacer from '@components/spacer.astro'
 import { SITE } from '@constants'
 import OSS_PROJECTS from '@data/products.json'
 
-const POSTS_TO_SHOW = 10
+const POSTS_TO_SHOW = 6
 
 const posts = sortAsc(await getCollection('blog')).slice(0, POSTS_TO_SHOW)
 ---
@@ -36,8 +36,9 @@ const posts = sortAsc(await getCollection('blog')).slice(0, POSTS_TO_SHOW)
 			},
 		]}
 	/>
-	<SkipNavContent>
-		<h1 class="sr-only">{SITE.title}</h1>
+	<SkipNavContent searchIndex={true}>
+		<span class="sr-only" data-pagefind-filter="section">Home</span>
+		<h1 class="sr-only" data-pagefind-meta="title">{SITE.title}</h1>
 		<Prose>
 			<Hero />
 		</Prose>
