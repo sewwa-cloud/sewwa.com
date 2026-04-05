@@ -4,14 +4,36 @@ import Seo from '@components/seo.astro'
 import SkipNavContent from '@components/a11y/skip-nav-content.astro'
 import { Content } from '@assets/about.mdx'
 import Prose from '@components/prose.astro'
+import Spacer from '@components/spacer.astro'
+import { CONTACT_EMAIL, SITE } from '@constants'
+
+const title = 'About'
+const description = `Sewwa offers free SEO tools and guides—JSON-LD schema, structured data, and expert tips. Contact us at ${CONTACT_EMAIL}.`
 ---
 
 <Layout>
-	<Seo slot="seo" title="About" />
+	<Seo
+		slot="seo"
+		title={title}
+		description={description}
+		image={SITE.defaultOgImage}
+		ogType="website"
+		schema={{
+			'@context': 'https://schema.org',
+			'@type': 'Organization',
+			name: SITE.title,
+			url: SITE.url,
+			description: SITE.description,
+			email: CONTACT_EMAIL,
+		}}
+	/>
 	<SkipNavContent searchIndex={true}>
-		<span class="sr-only" data-pagefind-filter="section">About</span>
-		<h1 class="sr-only" data-pagefind-meta="title">About</h1>
 		<Prose>
+			<p class="sr-only">
+				<span data-pagefind-filter="section">About</span>
+			</p>
+			<h1 data-pagefind-meta="title">{title}</h1>
+			<Spacer axis="vertical" size={8} />
 			<Content />
 		</Prose>
 	</SkipNavContent>
