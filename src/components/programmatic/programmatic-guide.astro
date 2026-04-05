@@ -1,0 +1,156 @@
+---
+import type { ProgrammaticEntry } from '@data/programmatic/types'
+import Prose from '@components/prose.astro'
+import Spacer from '@components/spacer.astro'
+import Link from '@components/link.astro'
+import { parseProgrammaticMarkdown } from '@utils'
+import { Code } from 'astro-expressive-code/components'
+
+interface Props {
+	entry: ProgrammaticEntry
+}
+
+const { entry } = Astro.props
+const bodyHtml = await parseProgrammaticMarkdown(entry.bodyMarkdown)
+
+const h1 =
+	entry.kind === 'industry'
+		? `Schema generator for ${entry.industryLabel}`
+		: entry.kind === 'platform'
+			? `How to add schema to ${entry.platformLabel}`
+			: `${entry.schemaTypeLabel} schema: complete guide`
+
+const guideTypeLabel =
+	entry.kind === 'industry' ? 'Industry' : entry.kind === 'platform' ? 'Platform' : 'Schema type'
+---
+
+<Prose>
+	<p class="sr-only">
+		<span data-pagefind-filter="section">Schema guides</span>
+		<span data-pagefind-filter="guide_type">{guideTypeLabel}</span>
+	</p>
+	<h1 class="mb-0!" data-pagefind-meta="title">{h1}</h1>
+	<Spacer axis="vertical" size={8} />
+
+	{
+		entry.kind === 'industry' && (
+			<>
+				<h2>Common schema types for {entry.industryLabel}</h2>
+				<ul>
+					{entry.commonSchemas.map((s) => (
+						<li>{s}</li>
+					))}
+				</ul>
+				<Spacer axis="vertical" size={6} />
+				<h2>SEO tips</h2>
+				<ul>
+					{entry.tips.map((t) => (
+						<li>{t}</li>
+					))}
+				</ul>
+				<Spacer axis="vertical" size={6} />
+				<h2>Example JSON-LD</h2>
+				<Code code={entry.exampleJsonLd} lang="json" />
+			</>
+		)
+	}
+
+	{
+		entry.kind === 'platform' && (
+			<>
+				<p class="text-faded">
+					<strong>Category:</strong> {entry.category.replace(/-/g, ' ')}
+				</p>
+				<Spacer axis="vertical" size={4} />
+				<h2>Plugins and apps</h2>
+				<ul>
+					{entry.plugins.map((p) => (
+						<li>
+							{p.name}
+							{p.notes ? ` — ${p.notes}` : ''}
+						</li>
+					))}
+				</ul>
+				<Spacer axis="vertical" size={6} />
+				<h2>Manual implementation</h2>
+				<p>{entry.manualMethod}</p>
+				<Spacer axis="vertical" size={6} />
+				<h2>Troubleshooting</h2>
+				<ul class="list-none pl-0 space-y-4">
+					{entry.troubleshooting.map((t) => (
+						<li>
+							<strong>{t.problem}</strong>
+							<br />
+							<span class="text-subtle">{t.solution}</span>
+						</li>
+					))}
+				</ul>
+			</>
+		)
+	}
+
+	{
+		entry.kind === 'schemaType' && (
+			<>
+				<p class="text-faded">
+					<strong>When to use:</strong> {entry.useCase}
+				</p>
+				<Spacer axis="vertical" size={6} />
+				<h2>Required properties</h2>
+				<ul>
+					{entry.requiredProperties.map((p) => (
+						<li>
+							<strong>{p.name}</strong> — {p.description}
+						</li>
+					))}
+				</ul>
+				{entry.optionalProperties.length > 0 && (
+					<>
+						<Spacer axis="vertical" size={6} />
+						<h2>Optional properties</h2>
+						<ul>
+							{entry.optionalProperties.map((p) => (
+								<li>
+									<strong>{p.name}</strong> — {p.description}
+								</li>
+							))}
+						</ul>
+					</>
+				)}
+				<Spacer axis="vertical" size={6} />
+				<h2>Example JSON-LD</h2>
+				<Code code={entry.exampleJsonLd} lang="json" />
+				<Spacer axis="vertical" size={6} />
+				<h2>Validation tips</h2>
+				<ul>
+					{entry.validationTips.map((t) => (
+						<li>{t}</li>
+					))}
+				</ul>
+			</>
+		)
+	}
+
+	<Spacer axis="vertical" size={10} />
+	<h2>Overview</h2>
+	<div class="programmatic-md" set:html={bodyHtml} />
+	<Spacer axis="vertical" size={10} />
+	<p>
+		<Link variant="highlight" href={`${import.meta.env.BASE_URL}schema-generator/`}>
+			Try the free Schema Generator →
+		</Link>
+	</p>
+</Prose>
+
+<style>
+	.programmatic-md :global(p) {
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+	.programmatic-md :global(p:first-child) {
+		margin-top: 0;
+	}
+	.programmatic-md :global(strong) {
+		font-weight: 600;
+	}
+</style>

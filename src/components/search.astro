@@ -129,6 +129,8 @@ if (trailingSlash === 'never') dataAttributes['data-strip-trailing-slash'] = ''
 						showImages: false,
 						showSubResults: true,
 						resetStyles: false,
+						excerptLength: 12,
+						openFilters: ['section', 'guide_type'],
 						processResult: (result: { url: string; sub_results: Array<{ url: string }> }) => {
 							result.url = formatURL(result.url)
 							result.sub_results = result.sub_results.map((sub_result) => {

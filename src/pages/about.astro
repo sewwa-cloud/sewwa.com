@@ -8,8 +8,9 @@ import Prose from '@components/prose.astro'
 
 <Layout>
 	<Seo slot="seo" title="About" />
-	<SkipNavContent>
-		<h1 class="sr-only">About</h1>
+	<SkipNavContent searchIndex={true}>
+		<span class="sr-only" data-pagefind-filter="section">About</span>
+		<h1 class="sr-only" data-pagefind-meta="title">About</h1>
 		<Prose>
 			<Content />
 		</Prose>

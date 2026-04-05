@@ -12,8 +12,9 @@ const posts = sortAsc(await getCollection('blog'))
 
 <Layout>
 	<Seo slot="seo" title="Blog" />
-	<SkipNavContent>
-		<h1 class="sr-only">Blog</h1>
+	<SkipNavContent searchIndex={true}>
+		<span class="sr-only" data-pagefind-filter="section">Blog</span>
+		<h1 class="sr-only" data-pagefind-meta="title">Blog</h1>
 		<div class="flex gap-10 flex-col">
 			{
 				posts.map(({ data: post }) => (

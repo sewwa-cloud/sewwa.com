@@ -1,0 +1,91 @@
+---
+import Layout from '@layouts/layout.astro'
+import Seo from '@components/seo.astro'
+import SkipNavContent from '@components/a11y/skip-nav-content.astro'
+import Prose from '@components/prose.astro'
+import Spacer from '@components/spacer.astro'
+import Link from '@components/link.astro'
+import { PROGRAMMATIC_ENTRIES } from '@data/programmatic/registry'
+import { schemaGuidesHubJsonLd } from '@data/programmatic/seo-helpers'
+import { SITE } from '@constants'
+
+export const prerender = true
+
+const industries = PROGRAMMATIC_ENTRIES.filter((e) => e.kind === 'industry')
+const platforms = PROGRAMMATIC_ENTRIES.filter((e) => e.kind === 'platform')
+const schemaTypes = PROGRAMMATIC_ENTRIES.filter((e) => e.kind === 'schemaType')
+
+const title = 'Schema guides — JSON-LD by industry, platform & type'
+const description =
+	'Browse JSON-LD and structured data guides by industry (local business, e-commerce, healthcare), CMS/framework (WordPress, Shopify, Astro), and schema.org types. Link to the free Schema Generator.'
+const seoDocumentTitle = `${title} | ${SITE.title}`
+const hubSchema = schemaGuidesHubJsonLd({ title: seoDocumentTitle, description })
+---
+
+<Layout>
+	<Seo
+		slot="seo"
+		title={title}
+		description={description}
+		image={SITE.defaultOgImage}
+		ogType="website"
+		schema={hubSchema}
+	>
+		<meta data-pagefind-meta="section" content="Schema guides" />
+	</Seo>
+	<SkipNavContent searchIndex={true}>
+		<Prose>
+			<p class="sr-only">
+				<span data-pagefind-filter="section">Schema guides</span>
+			</p>
+			<h1 data-pagefind-meta="title">{title}</h1>
+			<Spacer axis="vertical" size={4} />
+			<p class="text-faded text-lg">
+				{description}{' '}
+				<Link variant="highlight" href={`${import.meta.env.BASE_URL}schema-generator/`}>Open Schema Generator →</Link>
+			</p>
+			<Spacer axis="vertical" size={12} />
+
+			<h2 id="by-industry">By industry</h2>
+			<p class="text-subtle">Schema patterns for verticals and local businesses.</p>
+			<Spacer axis="vertical" size={4} />
+			<ul class="columns-1 sm:columns-2 gap-x-8 space-y-2">
+				{
+					industries.map((e) => (
+						<li>
+							<Link href={`${import.meta.env.BASE_URL}${e.urlSegment}/`}>{e.industryLabel}</Link>
+						</li>
+					))
+				}
+			</ul>
+			<Spacer axis="vertical" size={12} />
+
+			<h2 id="by-platform">By platform</h2>
+			<p class="text-subtle">How to add or manage JSON-LD on common CMS and frameworks.</p>
+			<Spacer axis="vertical" size={4} />
+			<ul class="columns-1 sm:columns-2 gap-x-8 space-y-2">
+				{
+					platforms.map((e) => (
+						<li>
+							<Link href={`${import.meta.env.BASE_URL}${e.urlSegment}/`}>{e.platformLabel}</Link>
+						</li>
+					))
+				}
+			</ul>
+			<Spacer axis="vertical" size={12} />
+
+			<h2 id="schema-types">Schema types</h2>
+			<p class="text-subtle">Property reference and examples for popular types.</p>
+			<Spacer axis="vertical" size={4} />
+			<ul class="columns-1 sm:columns-2 gap-x-8 space-y-2">
+				{
+					schemaTypes.map((e) => (
+						<li>
+							<Link href={`${import.meta.env.BASE_URL}${e.urlSegment}/`}>{e.schemaTypeLabel}</Link>
+						</li>
+					))
+				}
+			</ul>
+		</Prose>
+	</SkipNavContent>
+</Layout>

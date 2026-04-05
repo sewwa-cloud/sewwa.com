@@ -1,6 +1,7 @@
 import type { FrontmatterTag } from '@constants'
 import type { AstroIntegration } from 'astro'
 import type { CollectionEntry } from 'astro:content'
+import { marked } from 'marked'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sirv from 'sirv'
@@ -134,4 +135,12 @@ export function pagefindIntegration(): AstroIntegration {
 			},
 		},
 	}
+}
+
+/**
+ * Render programmatic guide markdown (GFM) to HTML for use with set:html inside Prose.
+ */
+export async function parseProgrammaticMarkdown(markdown: string): Promise<string> {
+	const out = await marked.parse(markdown, { async: true })
+	return typeof out === 'string' ? out : String(out)
 }
