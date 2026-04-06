@@ -10,7 +10,6 @@ tags: ["Web Development", "Developer Tools", "AI", "Productivity"]
 
 # Context Engineering for AI Coding Agents: AGENTS.md Guide
 
-![Context Engineering Overview - Diagram showing how AGENTS.md and agent skills provide context to AI coding agents](./images/context-engineering-overview.png)
 
 Your AI coding agent doesn't understand your codebase. Not by default, anyway.
 
@@ -26,7 +25,6 @@ Here's how AGENTS.md and agent skills work, and how to use them effectively.
 
 Without proper context, every coding session starts from zero.
 
-![Discovery Cost Comparison - Before and after showing repeated file scans vs instant context understanding](./images/discovery-cost.png)
 
 **What happens without context**:
 1. Agent reads system prompt
@@ -46,7 +44,6 @@ Without proper context, every coding session starts from zero.
 
 **AGENTS.md** is a Markdown file at the root of your repository that gives AI agents spatial awareness of your codebase.
 
-![AGENTS.md File Structure - Visual breakdown of AGENTS.md sections with example content](./images/agents-md-structure.png)
 
 Think of it as the agent-facing counterpart to README.md. While README.md explains your project to humans, AGENTS.md explains it to AI agents.
 
@@ -100,7 +97,6 @@ Serves 100k+ daily active users.
 
 If AGENTS.md gives agents a map of your codebase, **agent skills** give them reusable expertise for specific tasks.
 
-![Agent Skills Concept - Modular skill files loaded on-demand for specific workflows](./images/agent-skills-concept.png)
 
 ### How Skills Work
 
@@ -149,7 +145,6 @@ This keeps context lean while ensuring domain-specific guidance is available whe
 
 When a session starts, the agent checks for AGENTS.md at the repository root.
 
-![Agent Reading AGENTS.md - Sequence showing agent discovering and reading AGENTS.md at session start](./images/agent-reading-agents-md.png)
 
 ### Step 2: Context Shapes Understanding
 
@@ -173,7 +168,6 @@ With context, the agent produces code that:
 
 ### 1. Keep It Lean
 
-![AGENTS.md Size Optimization - Graph showing optimal AGENTS.md size vs context window usage](./images/agents-md-size.png)
 
 **Don't**: Document every function and component
 **Do**: Focus on high-level patterns and constraints
@@ -231,7 +225,6 @@ Context helps agents make better decisions when rules don't cover edge cases.
 
 ### Example: Implementing Authentication
 
-![Agent Skill Loading - Sequence showing skill loading on-demand during authentication task](./images/skill-loading-sequence.png)
 
 **Without skill**:
 1. Agent researches authentication patterns
@@ -307,7 +300,6 @@ export default async function ProtectedRoute() {
 
 I tested the same task three ways:
 
-![Performance Comparison - Three-column comparison showing no context vs AGENTS.md vs AGENTS.md + skill](./images/performance-comparison.png)
 
 **Task**: Implement role-based access control (RBAC) for a Next.js app
 
@@ -335,7 +327,6 @@ I tested the same task three ways:
 
 ## When to Use AGENTS.md vs Skills
 
-![Decision Tree - Flowchart showing when to use AGENTS.md vs agent skills](./images/decision-tree.png)
 
 **Use AGENTS.md for**:
 - Broad, persistent context
@@ -420,7 +411,6 @@ I tested the same task three ways:
 
 ### Metrics to Track
 
-![Success Metrics - Dashboard showing token reduction, mistake rate, and time savings](./images/success-metrics.png)
 
 1. **Token usage**: Should decrease 30-50%
 2. **Mistake rate**: Should drop to near-zero
@@ -440,7 +430,6 @@ I tested the same task three ways:
 
 Context engineering is becoming essential as AI coding tools mature.
 
-![Future Vision - Timeline showing evolution from manual coding to AI-assisted to context-aware development](./images/future-vision.png)
 
 **Phase 1** (Now): AI helps write code, but needs hand-holding
 **Phase 2** (Coming): AI understands your project through context
