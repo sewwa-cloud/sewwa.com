@@ -8,8 +8,6 @@ slug: "open-graph-best-practices-2026"
 tags: ["SEO", "Web Development", "Tools", "Developer Tools"]
 ---
 
-# Open Graph Best Practices 2026: Complete Guide for Articles
-
 If your articles still use Open Graph tags from 2024 or earlier, you're leaving social traffic on the table.
 
 Facebook, Twitter, LinkedIn, and WhatsApp have all updated how they handle OG tags. What worked two years ago might now result in broken previews, missing images, or truncated titles.
@@ -58,22 +56,22 @@ Here's the minimum you need for any blog article in 2026:
 
 ### Why Each Tag Matters
 
-**og:title**  
+**`og:title`**  
 The headline that appears when your article is shared. Keep it 60-90 characters. Longer titles get cut off with "..." which reduces click-through rates.
 
-**og:type**  
+**`og:type`**  
 Must be set to `"article"` for blog posts. This tells social platforms to look for article-specific tags and display article metadata.
 
-**og:url**  
+**`og:url`**  
 Your canonical URL. Use the full URL including `https://` and trailing slash if that's your site's standard. Avoid query parameters unless necessary.
 
-**og:image**  
+**`og:image`**  
 The most important tag for CTR. Use unique images for each article. Generic stock photos perform poorly—custom images get 2-3x more clicks.
 
-**og:description**  
+**`og:description`**  
 150-200 characters works best. Shorter descriptions feel incomplete. Longer ones get truncated.
 
-**og:site_name**  
+**`og:site_name`**  
 Helps with brand recognition across multiple shares from your domain.
 
 ## Article-Specific Open Graph Tags
@@ -92,19 +90,19 @@ These tags only work when `og:type="article"`:
 
 ### Understanding Each Property
 
-**article:published_time**  
+**`article:published_time`**  
 When the article was first published. Use ISO 8601 format with timezone. This affects freshness signals on social platforms.
 
-**article:modified_time**  
+**`article:modified_time`**  
 When the article was last updated. Useful for evergreen content that gets refreshed periodically.
 
-**article:author**  
+**`article:author`**  
 The author's name. Some platforms display this in the preview card, adding credibility.
 
-**article:section**  
+**`article:section`**  
 A high-level category (e.g., "SEO", "Marketing", "Technology"). Helps with categorization on Facebook.
 
-**article:tag**  
+**`article:tag`**  
 Multiple tags are allowed. Use relevant keywords that describe the article's topics.
 
 ## Twitter Card Integration
