@@ -65,8 +65,7 @@ jobs:
             --title "chore: bump version to ${{ steps.version.outputs.version }}" \
             --body "Automated version bump from release \`$GITHUB_REF_NAME\`." \
             --base main \
-            --head "$BRANCH" \
-            --label "skip-changelog"
+            --head "$BRANCH"
 
       - name: ✅ Enable auto-merge
         if: env.skip != 'true'
