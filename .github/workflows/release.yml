@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: 📥 Checkout main
@@ -26,28 +27,51 @@ jobs:
       - name: 📦 Extract version from tag
         id: version
         run: |
-          # Strip 'v' prefix from tag (e.g., v0.4.15 → 0.4.15)
           VERSION="${GITHUB_REF_NAME#v}"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "Current tag: $GITHUB_REF_NAME"
-          echo "Package version: $VERSION"
+          echo "Tag: $GITHUB_REF_NAME → $VERSION"
 
-      - name: 🔄 Update package.json
+      - name: 🔄 Sync package.json version
         run: |
-          # Use node to update version reliably
-          node -e "
-            const fs = require('fs');
-            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            pkg.version = '${{ steps.version.outputs.version }}';
-            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
-          "
-          echo "Updated package.json to version ${{ steps.version.outputs.version }}"
-          cat package.json | grep version
+          npm version ${{ steps.version.outputs.version }} --no-git-tag-version --allow-same-version
+          echo "Updated to ${{ steps.version.outputs.version }}:"
+          grep '"version"' package.json
 
-      - name: 💾 Commit and push
+      - name: 🌿 Create PR branch & push
         run: |
+          BRANCH="chore/bump-version-${{ steps.version.outputs.version }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add package.json
-          git commit -m "chore: bump version to ${{ steps.version.outputs.version }}" || echo "No changes needed"
-          git push origin main
+          git checkout -b "$BRANCH"
+          git add package.json package-lock.json
+          if git diff --staged --quiet; then
+            echo "No version change needed"
+            echo "skip=true" >> "$GITHUB_ENV"
+          else
+            git commit -m "chore: bump version to ${{ steps.version.outputs.version }}"
+            git push origin "$BRANCH"
+            echo "branch=$BRANCH" >> "$GITHUB_ENV"
+            echo "pr_url=$(gh pr view --json url -q .url 2>/dev/null || echo '')" >> "$GITHUB_ENV"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📝 Create Pull Request
+        if: env.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --title "chore: bump version to ${{ steps.version.outputs.version }}" \
+            --body "Automated version bump from release \`$GITHUB_REF_NAME\`." \
+            --base main \
+            --head "$BRANCH" \
+            --label "automated"
+
+      - name: ✅ Enable auto-merge
+        if: env.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sleep 5
+          gh pr merge "$BRANCH" --auto --squash
