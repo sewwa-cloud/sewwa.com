@@ -66,7 +66,7 @@ jobs:
             --body "Automated version bump from release \`$GITHUB_REF_NAME\`." \
             --base main \
             --head "$BRANCH" \
-            --label "automated"
+            --label "skip-changelog"
 
       - name: ✅ Enable auto-merge
         if: env.skip != 'true'
