@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import { globSync } from "node:fs";
 
 // Minimal frontmatter parser (no gray-matter dependency needed)
 function parseFrontmatter(content: string): { data: Record<string, any>; body: string } {
@@ -43,7 +42,7 @@ const BLOG_DIR = path.resolve("content/blog");
 const PUBLIC_DIR = path.resolve("public");
 
 // Collect all blog posts
-const entries = globSync("*", { cwd: BLOG_DIR, withFileTypes: true })
+const entries = fs.readdirSync(BLOG_DIR, { withFileTypes: true })
   .filter((d) => d.isDirectory())
   .map((d) => {
     const mdxPath = path.join(BLOG_DIR, d.name, "index.mdx");
