@@ -1,0 +1,83 @@
+# SEWWA.com
+
+SEWWA.com provides free web development and SEO tools for developers, designers, and marketers.
+
+## Tools
+
+- [Schema Generator](https://www.sewwa.com/schema-generator/) — Generate JSON-LD structured data schemas for SEO
+- [Color Palette Generator](https://www.sewwa.com/color-palette/) — Create, convert, and manage CSS color palettes
+
+## Blog
+
+### SEO
+
+- [The 2026 AI SEO Checklist: Rank in the AI Search Era](https://www.sewwa.com/blog/ai-seo-checklist-2026/)
+- [How to Get AI Crawlers to Actually Index Your Site in 2026](https://www.sewwa.com/blog/optimize-website-ai-crawler-indexing/)
+- [Technical SEO in 2026: Speed, Vitals & AI Crawlers](https://www.sewwa.com/blog/technical-seo-2026-speed-vitals-ai-crawlers/)
+- [Why You Need to Diversify Beyond Google Traffic in 2026](https://www.sewwa.com/blog/diversify-beyond-google-traffic/)
+- [Zero-Click Visibility: How to Get Your Content in AI Answers in 2026](https://www.sewwa.com/blog/zero-click-visibility-ai-answers/)
+- [AI Mode Purchase Behavior: How Consumers Make High-Stakes Decisions](https://www.sewwa.com/blog/ai-mode-purchase-behavior/)
+- [The Mad Men Era of SEO: Why AI Demands Persuasion Over Content](https://www.sewwa.com/blog/mad-men-era-seo-ai-persuasion/)
+- [Generative Engine Optimization: The Complete Guide for 2026](https://www.sewwa.com/blog/generative-engine-optimization-guide-2026/)
+- [Google-Agent Is Here: What It Means for Your SEO Strategy](https://www.sewwa.com/blog/google-agent-seo-strategy-2026/)
+- [LLM Monitoring Tools: Track Your Brand in AI Search](https://www.sewwa.com/blog/llm-monitoring-tools-ai-search-tracking/)
+- [The Agentic Web Standards: MCP, A2A, and What It Means for SEO](https://www.sewwa.com/blog/agentic-web-standards-mcp-a2a-seo/)
+- [Open Graph Best Practices 2026: Complete Guide for Articles](https://www.sewwa.com/blog/open-graph-best-practices-2026/)
+
+### AI
+
+- [The 2026 AI SEO Checklist: Rank in the AI Search Era](https://www.sewwa.com/blog/ai-seo-checklist-2026/)
+- [How to Get AI Crawlers to Actually Index Your Site in 2026](https://www.sewwa.com/blog/optimize-website-ai-crawler-indexing/)
+- [Technical SEO in 2026: Speed, Vitals & AI Crawlers](https://www.sewwa.com/blog/technical-seo-2026-speed-vitals-ai-crawlers/)
+- [AI Mode Purchase Behavior: How Consumers Make High-Stakes Decisions](https://www.sewwa.com/blog/ai-mode-purchase-behavior/)
+- [The Mad Men Era of SEO: Why AI Demands Persuasion Over Content](https://www.sewwa.com/blog/mad-men-era-seo-ai-persuasion/)
+- [Generative Engine Optimization: The Complete Guide for 2026](https://www.sewwa.com/blog/generative-engine-optimization-guide-2026/)
+- [Google-Agent Is Here: What It Means for Your SEO Strategy](https://www.sewwa.com/blog/google-agent-seo-strategy-2026/)
+- [LLM Monitoring Tools: Track Your Brand in AI Search](https://www.sewwa.com/blog/llm-monitoring-tools-ai-search-tracking/)
+- [The Agentic Web Standards: MCP, A2A, and What It Means for SEO](https://www.sewwa.com/blog/agentic-web-standards-mcp-a2a-seo/)
+- [Context Engineering for AI Coding Agents: AGENTS.md Guide](https://www.sewwa.com/blog/context-engineering-agents-md-ai-coding/)
+
+### Web Development
+
+- [The 2026 AI SEO Checklist: Rank in the AI Search Era](https://www.sewwa.com/blog/ai-seo-checklist-2026/)
+- [How to Get AI Crawlers to Actually Index Your Site in 2026](https://www.sewwa.com/blog/optimize-website-ai-crawler-indexing/)
+- [Technical SEO in 2026: Speed, Vitals & AI Crawlers](https://www.sewwa.com/blog/technical-seo-2026-speed-vitals-ai-crawlers/)
+- [Generative Engine Optimization: The Complete Guide for 2026](https://www.sewwa.com/blog/generative-engine-optimization-guide-2026/)
+- [Google-Agent Is Here: What It Means for Your SEO Strategy](https://www.sewwa.com/blog/google-agent-seo-strategy-2026/)
+- [The Agentic Web Standards: MCP, A2A, and What It Means for SEO](https://www.sewwa.com/blog/agentic-web-standards-mcp-a2a-seo/)
+- [Context Engineering for AI Coding Agents: AGENTS.md Guide](https://www.sewwa.com/blog/context-engineering-agents-md-ai-coding/)
+- [Open Graph Best Practices 2026: Complete Guide for Articles](https://www.sewwa.com/blog/open-graph-best-practices-2026/)
+
+### Tools
+
+- [The 2026 AI SEO Checklist: Rank in the AI Search Era](https://www.sewwa.com/blog/ai-seo-checklist-2026/)
+- [Technical SEO in 2026: Speed, Vitals & AI Crawlers](https://www.sewwa.com/blog/technical-seo-2026-speed-vitals-ai-crawlers/)
+- [LLM Monitoring Tools: Track Your Brand in AI Search](https://www.sewwa.com/blog/llm-monitoring-tools-ai-search-tracking/)
+- [LLM Monitoring Tools: Track Your Brand in AI Search](https://www.sewwa.com/blog/llm-monitoring-tools-ai-search-tracking/)
+- [The Agentic Web Standards: MCP, A2A, and What It Means for SEO](https://www.sewwa.com/blog/agentic-web-standards-mcp-a2a-seo/)
+- [Context Engineering for AI Coding Agents: AGENTS.md Guide](https://www.sewwa.com/blog/context-engineering-agents-md-ai-coding/)
+- [Open Graph Best Practices 2026: Complete Guide for Articles](https://www.sewwa.com/blog/open-graph-best-practices-2026/)
+- [Open Graph Best Practices 2026: Complete Guide for Articles](https://www.sewwa.com/blog/open-graph-best-practices-2026/)
+
+### Schema.org
+
+- [The 2026 AI SEO Checklist: Rank in the AI Search Era](https://www.sewwa.com/blog/ai-seo-checklist-2026/)
+- [How to Get AI Crawlers to Actually Index Your Site in 2026](https://www.sewwa.com/blog/optimize-website-ai-crawler-indexing/)
+
+### Content Marketing
+
+- [The 2026 AI SEO Checklist: Rank in the AI Search Era](https://www.sewwa.com/blog/ai-seo-checklist-2026/)
+- [How to Get AI Crawlers to Actually Index Your Site in 2026](https://www.sewwa.com/blog/optimize-website-ai-crawler-indexing/)
+- [Content Repurposing: Turn 1 Article Into 10 Pieces of Content](https://www.sewwa.com/blog/content-repurposing-10-pieces/)
+- [Why You Need to Diversify Beyond Google Traffic in 2026](https://www.sewwa.com/blog/diversify-beyond-google-traffic/)
+- [Zero-Click Visibility: How to Get Your Content in AI Answers in 2026](https://www.sewwa.com/blog/zero-click-visibility-ai-answers/)
+- [AI Mode Purchase Behavior: How Consumers Make High-Stakes Decisions](https://www.sewwa.com/blog/ai-mode-purchase-behavior/)
+- [The Mad Men Era of SEO: Why AI Demands Persuasion Over Content](https://www.sewwa.com/blog/mad-men-era-seo-ai-persuasion/)
+
+### Frontend
+
+- [Technical SEO in 2026: Speed, Vitals & AI Crawlers](https://www.sewwa.com/blog/technical-seo-2026-speed-vitals-ai-crawlers/)
+
+### "Productivity"
+
+- [Context Engineering for AI Coding Agents: AGENTS.md Guide](https://www.sewwa.com/blog/context-engineering-agents-md-ai-coding/)
