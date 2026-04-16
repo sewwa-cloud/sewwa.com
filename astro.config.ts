@@ -14,6 +14,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSlug from 'rehype-slug'
 import remarkDirective from 'remark-directive'
+import remarkMermaid from 'remark-mermaidjs'
 import remarkSmartypants from 'remark-smartypants'
 import { SITE } from './src/constants'
 import { readBlogSlugSetFromContentDir } from './src/data/sitemap-blog-slugs'
@@ -63,7 +64,20 @@ export default defineConfig({
 	},
 	markdown: {
 		// @ts-expect-error: Astro types don't match remark plugin
-		remarkPlugins: [[remarkSmartypants, { backticks: false }], remarkDirective, remarkAsides, [remarkSandpack, { componentName: ['Playground'] }]],
+		remarkPlugins: [
+			[remarkSmartypants, { backticks: false }],
+			remarkDirective,
+			remarkAsides,
+			[
+				remarkMermaid,
+				{
+					launchOptions: {
+						args: ['--no-sandbox', '--disable-setuid-sandbox'],
+					},
+				},
+			],
+			[remarkSandpack, { componentName: ['Playground'] }],
+		],
 		rehypePlugins: [
 			rehypeSlug,
 			[

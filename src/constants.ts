@@ -84,6 +84,8 @@ export const FRONTMATTER_TAGS = new Map(
 	[
 		['General', 'general'] as const,
 		['AI', 'ai'] as const,
+		['MCP', 'mcp'] as const,
+		['AI Agents', 'ai-agents'] as const,
 		['Coding', 'coding'] as const,
 		['CSS', 'css'] as const,
 		['Design', 'design'] as const,
