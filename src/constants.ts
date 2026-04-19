@@ -102,6 +102,7 @@ export const FRONTMATTER_TAGS = new Map(
 		['Tools', 'tools'] as const,
 		['Web Development', 'web-development'] as const,
 		['Content Marketing', 'content-marketing'] as const,
+		['Content Brief', 'content-brief'] as const,
 	],
 )
 
