@@ -1,0 +1,57 @@
+name: Sync package.json version
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  sync-version:
+    name: 🔖 Sync package.json to release tag
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.RELEASE_BOT_TOKEN }}
+          fetch-depth: 0
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📌 Resolve version from release tag
+        id: version
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          VERSION=${VERSION#v}
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$ ]]; then
+            echo "❌ Tag '${{ github.event.release.tag_name }}' is not a valid semver — skipping sync"
+            exit 1
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📌 Target version: $VERSION"
+
+      - name: 🔢 Bump package.json
+        run: |
+          npm version "${{ steps.version.outputs.version }}" \
+            --no-git-tag-version \
+            --allow-same-version
+
+      - name: 📤 Commit & push to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add package.json package-lock.json
+
+          if git diff --staged --quiet; then
+            echo "ℹ️  package.json already at v${{ steps.version.outputs.version }} — nothing to commit"
+            exit 0
+          fi
+
+          git commit -m "chore(release): bump version to v${{ steps.version.outputs.version }}"
+          git push origin main
+          echo "✅ Pushed version bump to main"
