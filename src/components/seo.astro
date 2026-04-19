@@ -21,6 +21,8 @@ const {
 	defaultOgImage: siteImage,
 } = SITE
 
+const usingDefaultImage = !image
+
 const seo = {
 	title: title ? `${title} | ${siteTitle}` : siteTitleDefault,
 	description: description || siteDescription,
@@ -35,7 +37,6 @@ if (forceTitle) {
 
 <title>{seo.title}</title>
 <meta name="description" content={seo.description} />
-<meta name="image" content={seo.image} />
 <meta name="author" content={SITE.defaultAuthor} />
 <link rel="alternate" type="application/rss+xml" title={SITE.titleDefault} href={new URL('rss.xml', Astro.site)} />
 <link rel="sitemap" type="application/xml" title="Sitemap" href={new URL('sitemap-index.xml', Astro.site)} />
@@ -44,6 +45,14 @@ if (forceTitle) {
 <meta property="og:url" content={seo.url} />
 <meta property="og:description" content={seo.description} />
 <meta property="og:image" content={seo.image} />
+<meta property="og:image:alt" content={seo.title} />
+{usingDefaultImage && (
+	<>
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1800" />
+		<meta property="og:image:height" content="945" />
+	</>
+)}
 <meta property="og:type" content={ogType} />
 <meta property="og:site_name" content={siteTitle} />
 <meta property="og:locale" content={SITE.lang} />
@@ -52,6 +61,7 @@ if (forceTitle) {
 <meta name="twitter:url" content={seo.url} />
 <meta name="twitter:description" content={seo.description} />
 <meta name="twitter:image" content={seo.image} />
+<meta name="twitter:image:alt" content={seo.title} />
 {noIndex && <meta name="robots" content="noindex, nofollow" />}
 {schema && (Array.isArray(schema) ? schema : [schema]).map((s) => (
 	<script type="application/ld+json" set:html={JSON.stringify(s)} />

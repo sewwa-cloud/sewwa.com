@@ -6,12 +6,22 @@ import SkipNavContent from '@components/a11y/skip-nav-content.astro'
 import { defaultDateFormat, sortAsc } from '@utils'
 import Spacer from '@components/spacer.astro'
 import Link from '@components/link.astro'
+import { SITE } from '@constants'
 
 const posts = sortAsc(await getCollection('blog'))
+
+const blogDescription = 'Latest articles on SEO, AI search, JSON-LD schema, and web development from SEWWA. Practical guides, experiments, and tool updates — updated weekly.'
+const blogSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	name: 'SEWWA Blog',
+	url: new URL('blog/', SITE.url).href,
+	description: blogDescription,
+}
 ---
 
 <Layout>
-	<Seo slot="seo" title="Blog" />
+	<Seo slot="seo" title="Blog" description={blogDescription} schema={blogSchema} />
 	<SkipNavContent searchIndex={true}>
 		<span class="sr-only" data-pagefind-filter="section">Blog</span>
 		<h1 class="sr-only" data-pagefind-meta="title">Blog</h1>

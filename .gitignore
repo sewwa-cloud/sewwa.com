@@ -26,3 +26,8 @@ pnpm-debug.log*
 # Auto-generated llms files
 public/llms.txt
 public/llms-full.txt
+
+# Project-specific override of global gitignore (.cursor is ignored globally,
+# but this project tracks its Cursor rules)
+!.cursor/
+!.cursor/**

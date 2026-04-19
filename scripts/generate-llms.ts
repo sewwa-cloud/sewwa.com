@@ -1,25 +1,27 @@
 import fs from "node:fs";
 import path from "node:path";
 
+type FrontmatterValue = string | string[] | Date;
+
 // Minimal frontmatter parser (no gray-matter dependency needed)
-function parseFrontmatter(content: string): { data: Record<string, any>; body: string } {
+function parseFrontmatter(content: string): { data: Record<string, FrontmatterValue>; body: string } {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!match) return { data: {}, body: content };
 
   const frontmatter = match[1];
   const body = match[2];
-  const data: Record<string, any> = {};
+  const data: Record<string, FrontmatterValue> = {};
 
   for (const line of frontmatter.split("\n")) {
     const m = line.match(/^(\w[\w-]*):\s*(.+)$/);
     if (m) {
-      let val: any = m[2].trim().replace(/^['"]|['"]$/g, "");
-      // Handle arrays like [SEO, AI, Web Development]
-      const arrMatch = val.match(/^\[(.+)\]$/);
+      const raw = m[2].trim().replace(/^['"]|['"]$/g, "");
+      let val: FrontmatterValue = raw;
+      const arrMatch = raw.match(/^\[(.+)\]$/);
       if (arrMatch) {
         val = arrMatch[1].split(",").map((s) => s.trim());
-      } else if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
-        val = new Date(val);
+      } else if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+        val = new Date(raw);
       }
       data[m[1]] = val;
     }

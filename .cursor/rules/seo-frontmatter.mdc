@@ -1,0 +1,58 @@
+---
+description: SEO quality rules for blog post frontmatter (title, description, slug, image)
+globs: "content/blog/**/*.mdx"
+alwaysApply: false
+---
+
+# Blog Post SEO Frontmatter
+
+## Title (≤ 60 chars)
+
+Google truncates at ~60–65 chars. Posts use `forceTitle` in `[slug].astro`, so no
+`| SEWWA` suffix is appended — the raw title is what users see.
+
+```yaml
+title: "Schema Generator: JSON-LD Structured Data, Made Simple"
+```
+
+- ❌ Avoid parenthetical asides that push over 60: `"... (Would've Saved Me 100+ Hours)"`
+- ✅ Front-load the primary keyword
+- ✅ Include the year when the content is time-sensitive (`2026`)
+
+## Description (140–158 chars)
+
+Target 140–158 chars. Under 120 wastes space; over 158 gets truncated.
+
+```yaml
+description: "A 2026 guide to Generative Engine Optimization (GEO) — how to earn citations in AI answers and stay visible as AI search replaces traditional results."
+```
+
+- ✅ Include the primary keyword once, naturally
+- ✅ End with a benefit or call-to-action clause
+- ❌ No keyword stuffing, no clickbait
+
+## Slug (no date prefix)
+
+The folder name is `YYYY-MM-DD--slug/`, but the `slug` frontmatter field is the
+**URL segment only**. Do not include the date prefix.
+
+```yaml
+# ✅ GOOD
+slug: "google-ai-mode-seo-impact"
+
+# ❌ BAD — produces /2026-04-12--google-ai-mode-seo-impact/
+slug: "2026-04-12--google-ai-mode-seo-impact"
+```
+
+Rules: kebab-case, lowercase, no leading/trailing slashes, no date, no spaces.
+
+## Image (optional, 1200×630 recommended)
+
+- Omit `image` to use the site-wide `/og-image.png` default.
+- If setting a per-post image, use 1200×630 (or same 1.905 aspect).
+- Place in `public/og/` and reference as `/og/<slug>.png`.
+
+## Tags (≥ 1, from allow-list)
+
+Use exact names from `FRONTMATTER_TAGS` in `@constants`. First tag is used as
+`articleSection` in JSON-LD, so pick the most specific one first.

@@ -3,7 +3,7 @@ import SkipNavContent from '@components/a11y/skip-nav-content.astro'
 import Link from '@components/link.astro'
 import Seo from '@components/seo.astro'
 import Spacer from '@components/spacer.astro'
-import { FRONTMATTER_TAGS } from '@constants'
+import { FRONTMATTER_TAGS, SITE } from '@constants'
 import Layout from '@layouts/layout.astro'
 import { defaultDateFormat, getPostsByTag } from '@utils'
 import { getCollection } from 'astro:content'
@@ -37,11 +37,20 @@ export async function getStaticPaths() {
 	return result
 }
 
-const { tagName, postsWithTag } = Astro.props
+const { tagName, tagSlug, postsWithTag } = Astro.props
+
+const tagDescription = `${postsWithTag.length} article${postsWithTag.length === 1 ? '' : 's'} tagged "${tagName}" on SEWWA — practical guides on SEO, AI search, and web development.`
+const tagSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	name: `Tag: ${tagName}`,
+	description: tagDescription,
+	url: new URL(`tags/${tagSlug}/`, SITE.url).href,
+}
 ---
 
 <Layout>
-	<Seo slot="seo" title={`Tag: ${tagName}`} />
+	<Seo slot="seo" title={`Tag: ${tagName}`} description={tagDescription} schema={tagSchema} />
 	<SkipNavContent searchIndex={true}>
 		<span class="sr-only" data-pagefind-filter="section">Tags</span>
 		<span class="sr-only" data-pagefind-filter="tag">{tagName}</span>

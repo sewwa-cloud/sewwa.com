@@ -10,10 +10,12 @@ import { getCollection } from 'astro:content'
 const entries = await getCollection('blog')
 
 const tags = getTags(entries)
+
+const tagsDescription = 'Browse all topics covered on the SEWWA blog — SEO, AI search, JSON-LD schema, developer tools, and more.'
 ---
 
 <Layout>
-	<Seo slot="seo" title="Tags" />
+	<Seo slot="seo" title="Tags" description={tagsDescription} />
 	<SkipNavContent searchIndex={true}>
 		<span class="sr-only" data-pagefind-filter="section">Tags</span>
 		<h2 class="font-medium text-xl md:text-2xl lg:text-3xl text-highlight" data-pagefind-meta="title">

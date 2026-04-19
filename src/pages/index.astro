@@ -30,7 +30,7 @@ const posts = sortAsc(await getCollection('blog')).slice(0, POSTS_TO_SHOW)
 			{
 				'@context': 'https://schema.org',
 				'@type': 'WebSite',
-				name: SITE.titleDefault,
+				name: SITE.title,
 				url: SITE.url,
 				description: SITE.description,
 			},

@@ -1,0 +1,66 @@
+---
+description: SEO metadata conventions for pages, Seo component, and JSON-LD schema
+globs: "src/**/*.astro"
+alwaysApply: false
+---
+
+# Page SEO & JSON-LD
+
+## `Seo` component usage
+
+- Blog posts: use `forceTitle={post.title}` (no `| SEWWA` suffix).
+- Static/list pages: use `title="..."` so `| SEWWA` is appended.
+- **Every page must pass a unique `description`.** Falling back to `SITE.description`
+  means duplicate meta descriptions across tag/list pages — avoid.
+
+```astro
+<!-- ✅ GOOD -->
+<Seo slot="seo" title="Blog" description={blogDescription} schema={blogSchema} />
+
+<!-- ❌ BAD — inherits site-wide description -->
+<Seo slot="seo" title="Blog" />
+```
+
+## Forbidden meta tags
+
+- ❌ `<meta name="image">` — non-standard, remove.
+- ✅ `og:image`, `twitter:image`, and their `:alt` variants cover image meta.
+
+## JSON-LD per page type
+
+- **Blog post** → `BlogPosting`: `headline`, `description`, `image`, `url`,
+  `mainEntityOfPage`, `datePublished`, `dateModified`, `keywords`,
+  `articleSection`, `author`, `publisher` (with `logo`).
+- **Blog index** → `Blog`: `name`, `url`, `description`.
+- **Tag page** → `CollectionPage`: `name`, `url`, `description`.
+- **Homepage** → `Organization` + `WebSite`: `name` = `SITE.title` (not
+  `titleDefault`), `url`, `description`.
+- **About** → `Organization`: `name`, `url`, `description`, `email`.
+
+## Publisher logo (required for `BlogPosting`)
+
+```ts
+publisher: {
+    '@type': 'Organization',
+    name: SITE.title,
+    url: SITE.url,
+    logo: {
+        '@type': 'ImageObject',
+        url: new URL('/sewwa.png', SITE.url).href,
+        width: 852,
+        height: 223,
+    },
+}
+```
+
+## OG image dimensions
+
+- Emit `og:image:width` / `og:image:height` **only** for the default site image
+  (currently 1800×945). Per-post images may have different dimensions and
+  mismatched hints break social previews.
+
+## Site constants (`constants.ts`)
+
+- `SITE.title` — short brand (`SEWWA`). Use in JSON-LD `name` fields.
+- `SITE.titleDefault` — homepage `<title>`. Broader positioning, not one product.
+- `SITE.description` — site-wide fallback (≤ 160 chars). Update when positioning shifts.
