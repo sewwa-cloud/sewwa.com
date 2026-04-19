@@ -67,15 +67,28 @@ if (props.pageType === 'blog') {
 	const articleImage = new URL(post.image || SITE.defaultOgImage, SITE.url)
 	articleSchema = {
 		'@context': 'https://schema.org',
-		'@type': 'Article',
+		'@type': 'BlogPosting',
 		headline: post.title,
 		description: post.description,
 		image: articleImage.href,
 		url: articleUrl.href,
+		mainEntityOfPage: { '@type': 'WebPage', '@id': articleUrl.href },
 		datePublished: isoDateFormat(post.date),
 		dateModified: isoDateFormat(post.lastUpdated),
+		keywords: post.tags.join(', '),
+		articleSection: post.tags[0],
 		author: { '@type': 'Person', name: SITE.defaultAuthor },
-		publisher: { '@type': 'Organization', name: SITE.title, url: SITE.url },
+		publisher: {
+			'@type': 'Organization',
+			name: SITE.title,
+			url: SITE.url,
+			logo: {
+				'@type': 'ImageObject',
+				url: new URL('/sewwa.png', SITE.url).href,
+				width: 852,
+				height: 223,
+			},
+		},
 	}
 	seoTitle = post.title
 	seoDescription = post.description
