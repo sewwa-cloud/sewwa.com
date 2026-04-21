@@ -1,0 +1,32 @@
+---
+description: Enforce Conventional Commits for git messages
+alwaysApply: true
+---
+
+# Semantic Commit Messages
+
+Use Conventional Commits format for every commit message:
+
+`type(scope): short imperative summary`
+
+## Allowed Types
+
+- `feat`: new user-facing feature/content
+- `fix`: bug fix
+- `refactor`: code restructuring without behavior change
+- `docs`: documentation-only change
+- `chore`: maintenance, config, tooling
+- `test`: tests added or updated
+
+## Rules
+
+- Keep subject line concise and imperative.
+- Prefer a specific scope (for example: `content`, `seo`, `build`, `workflow`).
+- Use body to explain intent/why (1-2 short sentences) when needed.
+- Do not add ending punctuation in the subject.
+
+## Examples
+
+- `feat(content): publish two new blog posts for April 2026`
+- `fix(seo): correct invalid frontmatter tags in blog posts`
+- `chore(workflow): update sync-version automation`
