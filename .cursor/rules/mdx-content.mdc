@@ -27,7 +27,7 @@ tags:
 ```
 
 - `slug`: kebab-case, no leading/trailing slashes, no spaces or dots
-- `tags`: use values from `FRONTMATTER_TAGS` in `@constants` (General, Coding, MDX, etc.)
+- **`tags` (strict)**: every value must be an **exact key** from `FRONTMATTER_TAGS` in `src/constants.ts`. The blog collection in `src/content.config.ts` validates tags with `z.enum` of those keys — a typo or an ad-hoc label like `Product Update` **breaks the build** (`InvalidContentEntryDataError`). Before saving MDX frontmatter, open `constants.ts` and copy tag names from the map keys only. To introduce a new tag, add it to `FRONTMATTER_TAGS` first, then use it in the post.
 
 ## Optional Frontmatter
 
