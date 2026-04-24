@@ -12,7 +12,7 @@ export const SITE_LOGO_ABSOLUTE = `${siteOrigin()}/sewwa-logo.png`
 
 const TOOL_BASE = siteOrigin()
 
-/** Free Sewwa tools referenced from Organization structured data. */
+/** Free Sewwa tools: WebApplication nodes used inside Organization.makesOffer[].itemOffered. */
 export const SEWWA_TOOL_WEB_APPLICATIONS: Array<Record<string, string>> = [
 	{
 		'@type': 'WebApplication',
@@ -36,6 +36,17 @@ export const SEWWA_TOOL_WEB_APPLICATIONS: Array<Record<string, string>> = [
 	},
 ]
 
+/** Organization.makesOffer — hasPart is not valid on Organization (schema.org). */
+function sewwaOrganizationMakesOffer(): Array<Record<string, unknown>> {
+	return SEWWA_TOOL_WEB_APPLICATIONS.map((app) => ({
+		'@type': 'Offer',
+		price: 0,
+		priceCurrency: 'USD',
+		availability: 'https://schema.org/InStock',
+		itemOffered: app,
+	}))
+}
+
 /**
  * Core Organization fields shared across standalone and @graph JSON-LD.
  * Pass optional overrides (e.g. `@id`, `email`).
@@ -55,7 +66,7 @@ export function sewwaOrganizationProperties(
 			width: 852,
 			height: 223,
 		},
-		hasPart: SEWWA_TOOL_WEB_APPLICATIONS,
+		makesOffer: sewwaOrganizationMakesOffer(),
 		...extra,
 	}
 }
