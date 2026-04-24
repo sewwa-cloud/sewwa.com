@@ -9,6 +9,7 @@ import Link from '@components/link.astro'
 import Prose from '@components/prose.astro'
 import Spacer from '@components/spacer.astro'
 import { SITE } from '@constants'
+import { sewwaOrganizationProperties } from '@data/organization-json-ld'
 import OSS_PROJECTS from '@data/products.json'
 
 const POSTS_TO_SHOW = 6
@@ -22,10 +23,7 @@ const posts = sortAsc(await getCollection('blog')).slice(0, POSTS_TO_SHOW)
 		schema={[
 			{
 				'@context': 'https://schema.org',
-				'@type': 'Organization',
-				name: SITE.title,
-				url: SITE.url,
-				description: SITE.description,
+				...sewwaOrganizationProperties(),
 			},
 			{
 				'@context': 'https://schema.org',
@@ -48,19 +46,31 @@ const posts = sortAsc(await getCollection('blog')).slice(0, POSTS_TO_SHOW)
 				<h2 class="font-medium text-xl md:text-2xl lg:text-3xl text-highlight">Products</h2>
 			</div>
 			<Spacer axis="vertical" size={8} />
-			<div class="flex gap-10 flex-col">
+			<ul class="m-0 grid list-none gap-4 p-0 sm:grid-cols-2">
 				{
 					OSS_PROJECTS.map((oss) => (
-						<div>
-							<Link variant="highlight" href={oss.url}>
-								{oss.name}
-							</Link>
-							<Spacer axis="vertical" size={2} />
-							<div class="text-faded">{oss.description}</div>
-						</div>
+						<li class="min-w-0">
+							<a
+								class="group flex h-full flex-col rounded-lg border border-border bg-ic-bg/75 p-5 transition-[border-color,box-shadow,background-color] duration-200 ease-out hover:border-primary/20 hover:bg-ic-bg/70 hover:shadow-md/5 md:p-6 dark:hover:bg-ic-bg/25 dark:hover:shadow-none"
+								href={oss.url}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								<span class="font-medium text-highlight text-lg leading-snug tracking-tight transition-colors group-hover:text-primary md:text-xl">
+									{oss.name}
+									<span class="ml-0.5 inline-block text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100" aria-hidden="true">
+										→
+									</span>
+								</span>
+								<p class="mt-3 mb-0 text-faded text-sm leading-relaxed md:text-base">
+									{oss.description}
+									<span class="sr-only"> Opens in a new window.</span>
+								</p>
+							</a>
+						</li>
 					))
 				}
-			</div>
+			</ul>
 		</section>
 		<Spacer axis="vertical" size={32} />
 		<section>
