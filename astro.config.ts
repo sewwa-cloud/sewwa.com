@@ -1,5 +1,9 @@
+import { rename, rm } from 'node:fs/promises'
+import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import type { Options as AutolinkHeadingsOptions } from 'rehype-autolink-headings'
 import type { Options as ExternalLinkOptions } from 'rehype-external-links'
+import type { AstroIntegration } from 'astro'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
@@ -23,6 +27,35 @@ import { remarkAsides } from './src/remark'
 import { pagefindIntegration } from './src/utils'
 
 const blogSlugs = readBlogSlugSetFromContentDir()
+const toolPages = [
+	'/content-brief-generator/',
+	'/schema-generator/',
+	'/color-palette/',
+	'/schema-generator/validator/',
+]
+
+/**
+ * @astrojs/sitemap always writes the sitemap index as `${filenameBase}-index.xml` (e.g. sitemap-index.xml),
+ * not `sitemap.xml`. After build we move it to `sitemap.xml` and drop the `-index` filename.
+ */
+function moveSitemapIndexToSitemapXml(): AstroIntegration {
+	return {
+		name: 'move-sitemap-index-to-sitemap-xml',
+		hooks: {
+			'astro:build:done': async ({ dir, logger }) => {
+				const out = fileURLToPath(dir)
+				const from = join(out, 'sitemap-index.xml')
+				const to = join(out, 'sitemap.xml')
+				try {
+					await rm(to, { force: true })
+					await rename(from, to)
+				} catch (err) {
+					logger.warn(`move-sitemap-index-to-sitemap-xml: could not move ${from} to ${to}: ${err}`)
+				}
+			},
+		},
+	}
+}
 
 export default defineConfig({
 	experimental: {
@@ -44,12 +77,15 @@ export default defineConfig({
 		expressiveCode(),
 		mdx(),
 		sitemap({
+			filenameBase: 'sitemap',
+			customPages: toolPages.map((path) => `${SITE.url.replace(/\/$/, '')}${path}`),
 			customSitemaps: [
 				`${SITE.url.replace(/\/$/, '')}/sitemap-blog.xml`,
 				`${SITE.url.replace(/\/$/, '')}/sitemap-schema-guides.xml`,
 			],
 			filter: (page) => !isExcludedFromMainSitemap(page, blogSlugs),
 		}),
+		moveSitemapIndexToSitemapXml(),
 		pagefindIntegration(),
 		react(),
 	],
