@@ -6,6 +6,7 @@ import { Content } from '@assets/about.mdx'
 import Prose from '@components/prose.astro'
 import Spacer from '@components/spacer.astro'
 import { CONTACT_EMAIL, SITE } from '@constants'
+import { sewwaOrganizationProperties } from '@data/organization-json-ld'
 
 const title = 'About'
 const description = `Sewwa offers free SEO tools and guides—JSON-LD schema, structured data, and expert tips. Contact us at ${CONTACT_EMAIL}.`
@@ -20,11 +21,7 @@ const description = `Sewwa offers free SEO tools and guides—JSON-LD schema, st
 		ogType="website"
 		schema={{
 			'@context': 'https://schema.org',
-			'@type': 'Organization',
-			name: SITE.title,
-			url: SITE.url,
-			description: SITE.description,
-			email: CONTACT_EMAIL,
+			...sewwaOrganizationProperties({ email: CONTACT_EMAIL }),
 		}}
 	/>
 	<SkipNavContent searchIndex={true}>

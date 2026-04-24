@@ -1,4 +1,5 @@
 import { SITE } from '@constants'
+import { sewwaOrganizationProperties } from '@data/organization-json-ld'
 import type { ProgrammaticEntry } from './types'
 
 function siteOrigin(): string {
@@ -37,12 +38,7 @@ export function programmaticPageJsonLd(entry: ProgrammaticEntry): Record<string,
 	return {
 		'@context': 'https://schema.org',
 		'@graph': [
-			{
-				'@type': 'Organization',
-				'@id': orgId,
-				name: SITE.title,
-				url: `${base}/`,
-			},
+			sewwaOrganizationProperties({ '@id': orgId }),
 			{
 				'@type': 'WebSite',
 				'@id': websiteId,
@@ -109,12 +105,7 @@ export function schemaGuidesHubJsonLd(params: {
 	return {
 		'@context': 'https://schema.org',
 		'@graph': [
-			{
-				'@type': 'Organization',
-				'@id': orgId,
-				name: SITE.title,
-				url: `${base}/`,
-			},
+			sewwaOrganizationProperties({ '@id': orgId }),
 			{
 				'@type': 'WebSite',
 				'@id': websiteId,

@@ -11,6 +11,11 @@
 		"description": "Create JSON-LD structured data for your website. Choose a schema type, fill in the form, and copy the generated code to your site."
 	},
 	{
+		"name": "Sewwa Schema Validator",
+		"url": "https://www.sewwa.com/schema-generator/validator",
+		"description": "Paste JSON-LD or validate a live URL against the schema.org vocabulary and Google Rich Results expectations — clear errors, warnings, and a shortcut to Google’s Rich Results Test."
+	},
+	{
 		"name": "Sewwa Color Palette",
 		"url": "https://www.sewwa.com/color-palette",
 		"description": "Create beautiful color palettes instantly. Convert colors between HEX, RGB, HSL formats and export to CSS variables ready for your projects."
