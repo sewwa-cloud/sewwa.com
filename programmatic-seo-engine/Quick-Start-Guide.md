@@ -160,7 +160,7 @@ npm run build:sitemap
 
 # Submit via Search Console
 # - Go to https://search.google.com/search-console
-# - Submit sitemap: /sitemap-index.xml
+# - Submit sitemap: /sitemap.xml
 # - Request indexing for top 10 priority pages
 ```
 
