@@ -61,7 +61,7 @@ jobs:
         with:
           name: deploy-archive
           path: deploy.tar.gz
-          retention-days: 7
+          retention-days: 3
 
   deploy:
     name: 🚀 Deploy to Vultr
