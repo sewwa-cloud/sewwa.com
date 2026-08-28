@@ -1,0 +1,27 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: 🔖 Release Please
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚀 Create release PR or GitHub Release
+        uses: googleapis/release-please-action@v4
+        with:
+          # PAT so the published GitHub Release can trigger deploy.yml and sync-version.yml.
+          # GITHUB_TOKEN events do not start other workflows.
+          token: ${{ secrets.RELEASE_BOT_TOKEN }}
+          target-branch: main
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
