@@ -1,0 +1,25 @@
+{
+	"$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+	"bootstrap-sha": "6226a8898951d052175a9121e466f3a953101365",
+	"include-component-in-tag": false,
+	"include-v-in-tag": true,
+	"packages": {
+		".": {
+			"release-type": "node",
+			"changelog-path": "CHANGELOG.md",
+			"versioning": "always-bump-patch",
+			"extra-files": [
+				{
+					"type": "json",
+					"path": "package-lock.json",
+					"jsonpath": "$.version"
+				},
+				{
+					"type": "json",
+					"path": "package-lock.json",
+					"jsonpath": "$['packages']['']['version']"
+				}
+			]
+		}
+	}
+}

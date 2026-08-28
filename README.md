@@ -86,9 +86,9 @@ This project is configured for automatic deployment to a Vultr VPS using GitHub 
 ### Quick Start
 
 1. **Configure GitHub Secrets** (see below)
-2. **Push to main branch** - Deployment triggers automatically
-3. **Or create a release** - Auto-deploys when published
-4. **Or manual trigger** - Use GitHub Actions UI
+2. **Merge to `main`** — Release Please opens/updates one Release PR
+3. **Merge the Release PR** — publishes a GitHub Release and auto-deploys
+4. **Or manual trigger** — Use GitHub Actions UI (`Deploy Blog to Vultr`)
 
 ### Deployment Features
 
@@ -108,6 +108,7 @@ Configure the following secrets in your GitHub repository:
 - `SSH_USER` - SSH username (usually `root` or a deploy user)
 - `SSH_PRIVATE_KEY` - SSH private key (PEM format)
 - `SSH_PORT` - SSH port (optional, defaults to 22)
+- `RELEASE_BOT_TOKEN` - PAT used by Release Please and version sync (must be allowed to create PRs, tags, and releases)
 
 ### Workflow Steps
 

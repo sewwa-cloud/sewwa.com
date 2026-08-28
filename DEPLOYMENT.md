@@ -17,8 +17,7 @@ This document provides comprehensive information about deploying the blog to the
 
 The blog uses a CI/CD pipeline via GitHub Actions that automatically deploys to Vultr VPS when:
 
-- Code is pushed to the `main` branch
-- A release is published on GitHub
+- A GitHub Release is published (created by Release Please)
 - Manual trigger via GitHub Actions UI
 
 ### Deployment Strategy
@@ -76,6 +75,7 @@ Configure the following secrets in your GitHub repository:
 | `SSH_USER` | SSH username | `root` or `deploy` |
 | `SSH_PRIVATE_KEY` | SSH private key (OpenSSH format) | Content of `~/.ssh/github_deploy` |
 | `SSH_PORT` | SSH port (optional, defaults to 22) | `22` or `2222` |
+| `RELEASE_BOT_TOKEN` | PAT for Release Please and version sync | GitHub PAT with `contents` + `pull-requests` |
 
 ### Getting Your SSH Private Key
 
@@ -125,21 +125,15 @@ cat ~/.ssh/github_deploy
 
 ### Automatic Deployment
 
-#### Push to Main Branch
+Releases are cut by [Release Please](https://github.com/googleapis/release-please) from conventional commits.
 
-```bash
-git push origin main
-```
+1. Merge feature PRs into `main` (`feat`, `fix`, …)
+2. Release Please opens or updates a single Release PR (changelog + version bump)
+3. Merge that Release PR when you want to ship
+4. GitHub creates tag `vX.Y.Z` and publishes a Release
+5. `deploy.yml` and `sync-version.yml` run from the published Release
 
-This triggers the deployment workflow automatically.
-
-#### Create a Release
-
-1. Go to GitHub → Releases → Draft a new release
-2. Tag version (e.g., `v1.0.0`)
-3. Publish the release
-
-The deployment will trigger automatically.
+Every releasable commit (`feat`, `fix`, …) bumps **patch** (`1.2.6` → `1.2.7`), matching the existing tag history.
 
 ### Manual Deployment
 
