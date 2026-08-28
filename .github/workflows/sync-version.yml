@@ -52,6 +52,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore(release): bump version to v${{ steps.version.outputs.version }}"
+          git commit -m "ci(release): bump version to v${{ steps.version.outputs.version }}"
           git push origin main
           echo "✅ Pushed version bump to main"
