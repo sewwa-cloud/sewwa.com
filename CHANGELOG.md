@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.9](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.8...v1.2.9) (2026-08-28)
+
+
+### Content
+
+* add "INP Optimization 2026: The Developer's Guide to Fixing It" blog post ([#85](https://github.com/sewwa-cloud/sewwa.com/issues/85)) ([a089ef3](https://github.com/sewwa-cloud/sewwa.com/commit/a089ef3b74aab4a9f640229429e75461b2962ffc))
+
 ## [1.2.8](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.7...v1.2.8) (2026-08-28)
 
 
