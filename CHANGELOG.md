@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.8](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.7...v1.2.8) (2026-08-28)
+
+
+### Content
+
+* add "Faceted Navigation SEO 2026: Stop Killing Your Crawl Budget" blog post ([#83](https://github.com/sewwa-cloud/sewwa.com/issues/83)) ([f4b0174](https://github.com/sewwa-cloud/sewwa.com/commit/f4b0174dcc0809fc8aebe60a1a497d7826003d58))
+
 ## [1.2.7](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.6...v1.2.7) (2026-08-28)
 
 
