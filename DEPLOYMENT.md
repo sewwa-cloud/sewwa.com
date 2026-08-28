@@ -127,13 +127,13 @@ cat ~/.ssh/github_deploy
 
 Releases are cut by [Release Please](https://github.com/googleapis/release-please) from conventional commits.
 
-1. Merge feature PRs into `main` (`feat`, `fix`, …)
+1. Merge feature PRs into `main` (`feat`, `fix`, `chore`, `content`, …)
 2. Release Please opens or updates a single Release PR (changelog + version bump)
 3. Merge that Release PR when you want to ship
 4. GitHub creates tag `vX.Y.Z` and publishes a Release
 5. `deploy.yml` and `sync-version.yml` run from the published Release
 
-Every releasable commit (`feat`, `fix`, …) bumps **patch** (`1.2.6` → `1.2.7`), matching the existing tag history.
+Releasable commits (`feat`, `fix`, `chore`, `content`, `perf`, `deps`) bump **patch** (`1.2.6` → `1.2.7`), matching the existing tag history. `docs`, `ci`, `test`, and similar types stay changelog-only.
 
 ### Manual Deployment
 
