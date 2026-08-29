@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.10](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.9...v1.2.10) (2026-08-29)
+
+
+### Content
+
+* add "Vite 8 + Rolldown: The 2026 Migration Guide" blog post ([#87](https://github.com/sewwa-cloud/sewwa.com/issues/87)) ([6053c4b](https://github.com/sewwa-cloud/sewwa.com/commit/6053c4b8ddd683f68e5d877aa5d3a644eadfa4a6))
+
 ## [1.2.9](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.8...v1.2.9) (2026-08-28)
 
 
