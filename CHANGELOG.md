@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.11](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.10...v1.2.11) (2026-08-30)
+
+
+### Content
+
+* add "Product Schema in 2026: The Fields Google Now Requires" blog post ([#89](https://github.com/sewwa-cloud/sewwa.com/issues/89)) ([448cd72](https://github.com/sewwa-cloud/sewwa.com/commit/448cd72f0c51e9cd64c7440bcd3766ad4e9c6b26))
+
 ## [1.2.10](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.9...v1.2.10) (2026-08-29)
 
 
