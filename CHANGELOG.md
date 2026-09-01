@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.12](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.11...v1.2.12) (2026-09-01)
+
+
+### Content
+
+* add "8 LCP Fixes That Actually Move Core Web Vitals Scores in 2026" blog post ([#91](https://github.com/sewwa-cloud/sewwa.com/issues/91)) ([7585297](https://github.com/sewwa-cloud/sewwa.com/commit/758529726a7894be3bdf49032f7949ce875c6af6))
+
 ## [1.2.11](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.10...v1.2.11) (2026-08-30)
 
 
