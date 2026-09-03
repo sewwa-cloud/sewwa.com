@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.13](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.12...v1.2.13) (2026-09-03)
+
+
+### Content
+
+* add "8 Headless CMS SEO Mistakes That Kill Indexing in 2026" blog post ([3094af5](https://github.com/sewwa-cloud/sewwa.com/commit/3094af53b4beb8fc00006508c9f65e3f60291382))
+* add "Cumulative Layout Shift in 2026: Why CLS Now Tanks Your Whole Site" blog post ([aab521b](https://github.com/sewwa-cloud/sewwa.com/commit/aab521bd730fdb1c5e48566d7686633839f97cab))
+* add \"llms.txt in 2026: 300K Domains Say It Does Nothing\" blog post ([1aaef37](https://github.com/sewwa-cloud/sewwa.com/commit/1aaef37c2677a72d4e2f3caa1647c901e4e146ce))
+
 ## [1.2.12](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.11...v1.2.12) (2026-09-01)
 
 
