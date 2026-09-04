@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.14](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.13...v1.2.14) (2026-09-04)
+
+
+### Content
+
+* add "Cloudflare's Sept 15 AI Crawler Block: Audit Your Site Now" blog post ([861db1d](https://github.com/sewwa-cloud/sewwa.com/commit/861db1dc7918d7d54bf0c4cacb7cf67057c3a825))
+
 ## [1.2.13](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.12...v1.2.13) (2026-09-03)
 
 
