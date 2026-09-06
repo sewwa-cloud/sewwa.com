@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.15](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.14...v1.2.15) (2026-09-06)
+
+
+### Content
+
+* add "Structured Data in 2026: What Still Works After Google's Cuts" blog post ([cd88298](https://github.com/sewwa-cloud/sewwa.com/commit/cd88298ea234fe04ea3f13f9605282bb836d67e4))
+
 ## [1.2.14](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.13...v1.2.14) (2026-09-04)
 
 
