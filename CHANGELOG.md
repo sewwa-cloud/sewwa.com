@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.16](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.15...v1.2.16) (2026-09-06)
+
+
+### Content
+
+* add "Google's /goto Redirect Broke Rank Tracking. Here's Your Fix" blog post ([29ee2d7](https://github.com/sewwa-cloud/sewwa.com/commit/29ee2d7d86ab4c40ad328fe8dbcc4a7b5b331ed0))
+
 ## [1.2.15](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.14...v1.2.15) (2026-09-06)
 
 
