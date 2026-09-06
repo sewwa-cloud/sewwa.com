@@ -1,32 +1,36 @@
 ---
-description: Enforce Conventional Commits for git messages
+description: Always use Conventional Commits for git commits and PR titles
 alwaysApply: true
 ---
 
 # Semantic Commit Messages
 
-Use Conventional Commits format for every commit message:
+Always use Conventional Commits. Never use free-form subjects.
 
 `type(scope): short imperative summary`
 
+This applies to every git commit and every PR title. Squash-merge uses the PR title as the commit on `main`, which Release Please reads for `CHANGELOG.md` and `vX.Y.Z` tags.
+
 ## Allowed Types
 
-- `feat`: new user-facing feature/content
-- `fix`: bug fix
-- `refactor`: code restructuring without behavior change
-- `docs`: documentation-only change
-- `chore`: maintenance, config, tooling
-- `test`: tests added or updated
+Releasable (patch bump): `feat`, `fix`, `perf`, `deps`, `content`, `chore`, `revert`
+
+Changelog-only: `docs`, `style`, `refactor`, `test`, `build`, `ci`
 
 ## Rules
 
-- Keep subject line concise and imperative.
-- Prefer a specific scope (for example: `content`, `seo`, `build`, `workflow`).
-- Use body to explain intent/why (1-2 short sentences) when needed.
-- Do not add ending punctuation in the subject.
+- Always include a type. Prefer a scope (`content`, `seo`, `workflow`, `build`).
+- Subject is concise, imperative, and has no ending punctuation.
+- Use the body to explain why (1–2 sentences) when needed.
+- If auto-PR fills a non-semantic title, fix the PR title before merge.
 
 ## Examples
 
-- `feat(content): publish two new blog posts for April 2026`
-- `fix(seo): correct invalid frontmatter tags in blog posts`
-- `chore(workflow): update sync-version automation`
+```
+✅ feat(content): publish two new blog posts for April 2026
+✅ fix(seo): correct invalid frontmatter tags in blog posts
+✅ chore(workflow): update auto-pr automation
+❌ update stuff
+❌ WIP
+❌ chore/release-please-chore-types
+```

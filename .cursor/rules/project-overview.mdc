@@ -41,3 +41,7 @@ import Seo from '../../components/seo.astro'
 
 - Prettier: tabs, singleQuote, semi, trailingComma es5, printWidth 100
 - Imports: always at top of file (no inline imports)
+
+## Git
+
+- Always use Conventional Commits for every git commit and PR title (`type(scope): summary`)

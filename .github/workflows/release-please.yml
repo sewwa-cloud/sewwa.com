@@ -1,5 +1,15 @@
 name: Release Please
 
+# Maintains a running "release PR" on main with an aggregated CHANGELOG.md
+# and patch bump (vX.Y.Z), computed from Conventional Commits in merged PR
+# titles. Each new merge into main updates that same PR until it is approved
+# and merged. Merging the release PR cuts the GitHub tag + Release, which
+# then triggers deploy.yml and sync-version.yml.
+#
+# Requires merges into main to use Conventional Commits-style titles
+# (feat:, fix:, chore:, content:, …). GitHub's "squash and merge" uses the
+# PR title as the commit message, which is what release-please reads.
+
 on:
   push:
     branches:
@@ -16,11 +26,11 @@ jobs:
     name: 🔖 Release Please
     runs-on: ubuntu-latest
     steps:
-      - name: 🚀 Create release PR or GitHub Release
+      - name: 🚀 Create or update release PR / publish GitHub Release
         uses: googleapis/release-please-action@v4
         with:
-          # PAT so the published GitHub Release can trigger deploy.yml and sync-version.yml.
-          # GITHUB_TOKEN events do not start other workflows.
+          # PAT so the published GitHub Release can trigger deploy.yml and
+          # sync-version.yml. GITHUB_TOKEN events do not start other workflows.
           token: ${{ secrets.RELEASE_BOT_TOKEN }}
           target-branch: main
           config-file: release-please-config.json
