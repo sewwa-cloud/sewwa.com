@@ -134,7 +134,7 @@ Releases are cut by [Release Please](https://github.com/googleapis/release-pleas
 5. Merging the Release PR creates tag `vX.Y.Z` and publishes a GitHub Release
 6. `deploy.yml` and `sync-version.yml` run from the published Release
 
-Releasable commits (`feat`, `fix`, `chore`, `content`, `perf`, `deps`) bump **patch** (`1.2.6` → `1.2.7`), matching the existing tag history. `docs`, `ci`, `test`, and similar types stay changelog-only.
+Releasable commits (`feat`, `fix`, `chore`, `content`, `perf`, `deps`) bump **patch** (`1.2.14` → `1.2.15`), matching the existing tag history. `docs`, `ci`, `test`, and similar types stay changelog-only.
 
 `auto-pr.yml` skips `main` and Release Please branches (`release-please--**`) so the release PR is not duplicated.
 
