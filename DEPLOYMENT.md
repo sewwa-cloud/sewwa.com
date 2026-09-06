@@ -17,7 +17,7 @@ This document provides comprehensive information about deploying the blog to the
 
 The blog uses a CI/CD pipeline via GitHub Actions that automatically deploys to Vultr VPS when:
 
-- A GitHub Release is published (created by Release Please)
+- A GitHub Release is published (created by Release Please after the release PR is merged)
 - Manual trigger via GitHub Actions UI
 
 ### Deployment Strategy
@@ -75,7 +75,7 @@ Configure the following secrets in your GitHub repository:
 | `SSH_USER` | SSH username | `root` or `deploy` |
 | `SSH_PRIVATE_KEY` | SSH private key (OpenSSH format) | Content of `~/.ssh/github_deploy` |
 | `SSH_PORT` | SSH port (optional, defaults to 22) | `22` or `2222` |
-| `RELEASE_BOT_TOKEN` | PAT for Release Please and version sync | GitHub PAT with `contents` + `pull-requests` |
+| `RELEASE_BOT_TOKEN` | PAT for auto-PR, Release Please, and version sync | GitHub PAT with `contents` + `pull-requests` |
 
 ### Getting Your SSH Private Key
 
@@ -125,15 +125,18 @@ cat ~/.ssh/github_deploy
 
 ### Automatic Deployment
 
-Releases are cut by [Release Please](https://github.com/googleapis/release-please) from conventional commits.
+Releases are cut by [Release Please](https://github.com/googleapis/release-please) from conventional commits. Tag format stays `vX.Y.Z` (always patch bump).
 
-1. Merge feature PRs into `main` (`feat`, `fix`, `chore`, `content`, …)
-2. Release Please opens or updates a single Release PR (changelog + version bump)
-3. Merge that Release PR when you want to ship
-4. GitHub creates tag `vX.Y.Z` and publishes a Release
-5. `deploy.yml` and `sync-version.yml` run from the published Release
+1. Push a working branch — `auto-pr.yml` opens a PR to `main` (further pushes update that same PR)
+2. Merge the feature PR into `main` (`feat`, `fix`, `chore`, `content`, …)
+3. Release Please opens or updates a single Release PR (`CHANGELOG.md` + version bump)
+4. Later merges into `main` keep updating that Release PR until you approve and merge it
+5. Merging the Release PR creates tag `vX.Y.Z` and publishes a GitHub Release
+6. `deploy.yml` and `sync-version.yml` run from the published Release
 
 Releasable commits (`feat`, `fix`, `chore`, `content`, `perf`, `deps`) bump **patch** (`1.2.6` → `1.2.7`), matching the existing tag history. `docs`, `ci`, `test`, and similar types stay changelog-only.
+
+`auto-pr.yml` skips `main` and Release Please branches (`release-please--**`) so the release PR is not duplicated.
 
 ### Manual Deployment
 
