@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.17](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.16...v1.2.17) (2026-09-10)
+
+
+### Content
+
+* add "Agentic Commerce SEO: UCP, ACP, and Your New Discovery Stack" blog post ([04c3721](https://github.com/sewwa-cloud/sewwa.com/commit/04c37219a8eddffcf019d938090f4b277559db62))
+
 ## [1.2.16](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.15...v1.2.16) (2026-09-06)
 
 
