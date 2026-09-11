@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.18](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.17...v1.2.18) (2026-09-11)
+
+
+### Content
+
+* add "9 Next.js 16.3 Changes That Quietly Affect Your SEO" blog post ([cb19699](https://github.com/sewwa-cloud/sewwa.com/commit/cb196998f5a1a962b6461f1f8eded60bd7ce1358))
+
 ## [1.2.17](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.16...v1.2.17) (2026-09-10)
 
 
