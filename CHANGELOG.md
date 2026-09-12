@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.19](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.18...v1.2.19) (2026-09-12)
+
+
+### Content
+
+* add "SEO Regression Testing in 2026: Guardrails for AI-Written Code" blog post ([784d7e0](https://github.com/sewwa-cloud/sewwa.com/commit/784d7e0957552efda372831f31f6b02bbec05fe1))
+
 ## [1.2.18](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.17...v1.2.18) (2026-09-11)
 
 
