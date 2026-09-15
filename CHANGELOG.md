@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.20](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.19...v1.2.20) (2026-09-15)
+
+
+### Content
+
+* add "Author Entity SEO in 2026: Who Signs Your AI-Written Draft?" blog post ([fc35e26](https://github.com/sewwa-cloud/sewwa.com/commit/fc35e266381ac3534c86697cc171e4d18dd25b1a))
+* add "Search Console Anomalies Broke Your 2026 Year-Over-Year Data" blog post ([4263a79](https://github.com/sewwa-cloud/sewwa.com/commit/4263a7990a1f69c75fc460165c5e2e178d5e65d7))
+
 ## [1.2.19](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.18...v1.2.19) (2026-09-12)
 
 
