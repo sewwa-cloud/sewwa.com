@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.21](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.20...v1.2.21) (2026-09-16)
+
+
+### Content
+
+* add "9 Things Your Server Logs Reveal That Search Console Can't" blog post ([5d74666](https://github.com/sewwa-cloud/sewwa.com/commit/5d74666a53a768e77d6a761acd9d2e70d2d3690d))
+
 ## [1.2.20](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.19...v1.2.20) (2026-09-15)
 
 
