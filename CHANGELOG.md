@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.22](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.21...v1.2.22) (2026-09-17)
+
+
+### Content
+
+* add "Mobile vs Desktop Core Web Vitals: The 15-Point INP Gap" blog post ([dfc4940](https://github.com/sewwa-cloud/sewwa.com/commit/dfc494005974536d30eb258f5117e3c9f20cf448))
+
 ## [1.2.21](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.20...v1.2.21) (2026-09-16)
 
 
