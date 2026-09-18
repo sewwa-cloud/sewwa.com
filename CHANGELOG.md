@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.23](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.22...v1.2.23) (2026-09-18)
+
+
+### Content
+
+* add "Merchant API Migration 2026: The Silent SEO Risks" blog post ([558cb19](https://github.com/sewwa-cloud/sewwa.com/commit/558cb19cf55548936476912ece547623bda9e4c7))
+
 ## [1.2.22](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.21...v1.2.22) (2026-09-17)
 
 
