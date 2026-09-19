@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.24](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.23...v1.2.24) (2026-09-19)
+
+
+### Content
+
+* add "8 Schema Markup Mistakes That Kill Your Rich Results (And AI Citations) in 2026" blog post ([27af978](https://github.com/sewwa-cloud/sewwa.com/commit/27af978b219e46df8dbe5076983805231da18496))
+
 ## [1.2.23](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.22...v1.2.23) (2026-09-18)
 
 
