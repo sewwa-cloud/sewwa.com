@@ -1,0 +1,181 @@
+---
+title: "8 Schema Markup Mistakes That Kill Your Rich Results (And AI Citations) in 2026"
+date: 2026-09-17
+lastUpdated: 2026-09-17
+description: "These 8 schema markup mistakes are silently blocking your rich results eligibility and AI Overview citations in 2026. Learn what breaks, why it breaks, and how to fix it."
+slug: "schema-markup-mistakes-rich-results-ai-citations-2026"
+tags:
+  - SEO
+  - Schema.org
+  - JSON-LD
+  - AI
+---
+
+# 8 Schema Markup Mistakes That Kill Your Rich Results (And AI Citations) in 2026
+
+You added JSON-LD to your site. You validated it in the Rich Results Test. You told your client it's done. And yet — no rich results in the SERP. No AI Overview citations. Just a plain blue link sitting there while your competitors get star ratings, FAQ dropdowns, and product carousels.
+
+Here's the uncomfortable truth: schema markup that *looks* correct is often deeply broken in ways Google's basic validator won't catch. And in 2026, the stakes are higher than ever. Bad schema doesn't just cost you rich results — it actively reduces your chances of being cited in AI Overviews, Google AI Mode, and third-party LLM surfaces like Perplexity and ChatGPT Browse. These systems use structured data for entity extraction and fact verification. Give them garbage, and they'll skip your page entirely.
+
+This listicle covers the 8 mistakes we see most frequently — ranked roughly by destructive potential, starting with the ones that can do the most damage fast. Each one has a concrete fix you can ship today.
+
+---
+
+## 1. Marking Up Content the User Can't Actually See
+
+This is the mistake that gets sites hit with manual actions. Google's structured data policy is explicit: your schema must describe what a real user can see on the page. If your JSON-LD declares a product price of $49.99, that price needs to exist visibly on the rendered page — not tucked in a hidden `div`, not conditionally rendered only after login, not different from what the user sees.
+
+The most common offenders are ecommerce sites that show "sale price" to the user but leave the `Offer` schema pointing at a full retail price. Or FAQ pages that syndicate schema from a CMS while displaying a slightly different text version to readers.
+
+Unlike a syntax error, a content mismatch can trigger a manual action that strips rich results from your *entire site* until it's resolved. That's not a warning — that's a full rich result ban with a manual review process to get it lifted.
+
+**Fix it:** Run Google's Rich Results Test against a live URL, then compare every declared value in the JSON-LD against what you can actually see on the rendered page. If they don't match, either update the schema or update the page content. There's no third option.
+
+[→ Read also: Structured Data in 2026: What Still Works After Google's Cuts](/blog/structured-data-2026-what-still-works-after-google-cuts/)
+
+---
+
+## 2. Still Using Retired or Deprecated Schema Types
+
+Google retired a significant chunk of rich result types over the last two years — and as of mid-2026, a huge percentage of sites are still shipping that dead markup. The FAQ rich result stopped appearing in SERPs on May 7, 2026. HowTo rich results for desktop are gone. Book actions, job training, dataset highlights in the way they used to work — all retired or heavily restricted.
+
+Here's the subtle part: using a retired type won't cause a validation error. Google's Rich Results Test might still show "no errors detected." The markup is technically valid — it just produces *zero visual benefit* in the SERP. You're burning crawl budget and adding render weight for nothing.
+
+The AI citation angle is actually interesting here. `FAQPage` schema still has value for AI systems even after the visual rich result is gone, because AI Overviews use it for answer extraction. But sites that implemented FAQ schema purely for the visual SERP feature and then stopped maintaining it are now serving stale Q&A pairs to LLMs. That's worse than no schema — you're giving AI systems outdated answers to actively recommend.
+
+**Fix it:** Audit your schema types against Google's current Supported Structured Data Markup guide. For any retired type, decide: does it still serve an AI visibility purpose (maintain and update it) or was it purely cosmetic (remove it and reclaim the render overhead)?
+
+---
+
+## 3. HTML Inside JSON-LD Values
+
+This one is silent and absolutely destructive. JSON-LD values must be plain text strings. No anchor tags. No `<strong>` or `<em>`. No `<br>` line breaks. No HTML entities like `&amp;` or `&nbsp;` (unless they're actually the intended character). The moment you put HTML inside a JSON-LD value, you've broken the markup in ways that often don't surface in validators — but Google's indexer and AI crawlers will silently fail to parse it correctly.
+
+The most common source of this mistake is CMS-generated schema that pulls values directly from WYSIWYG editor fields. The editor stores `<p>Our award-winning product...</p>` and the schema template dumps it straight into the `description` field. Now your `description` is `"<p>Our award-winning product...</p>"` — technically valid JSON, but semantically broken structured data.
+
+Crawlix's analysis of 2026 schema audits identified this as the single most common *destructive* mistake — common, widespread, and almost never caught by standard tooling because the JSON itself is syntactically valid.
+
+**Fix it:** Strip HTML before inserting any CMS-sourced content into JSON-LD. In JavaScript/Node: `value.replace(/<[^>]*>/g, '').trim()`. On the server side, use your language's HTML-stripping utility. Then re-validate with Google's Rich Results Test and the Schema.org validator.
+
+---
+
+## 4. Schema Trapped Inside Unrendered JavaScript
+
+If your JSON-LD is being injected by a JavaScript function that runs client-side only — inserted via `document.createElement('script')` in a React useEffect, for example — a significant portion of crawlers will never see it. Googlebot will eventually render it (usually), but "eventually" means potentially multiple crawl cycles and no guarantee of timely indexing. AI crawlers from Perplexity, Anthropic's ClaudeBot, and most third-party LLM systems operate on raw HTML without executing JavaScript. They'll miss your schema entirely.
+
+This is the structured data equivalent of JS-rendered content that doesn't get indexed — a problem closely related to headless CMS deployments. The difference is that rich results and AI citations depend on schema being present in the *first response*, not after client-side hydration.
+
+Google's own guidance is clear: server-render your JSON-LD. If you're using Next.js, that means placing your schema in a Server Component, not a Client Component useEffect. If you're using Astro, it should go in the `<head>` slot server-side. If you're using a React SPA with no SSR — this is one more reason that matters for SEO.
+
+**Fix it:** Check your site's raw HTML (curl the page, don't open DevTools) and search for `application/ld+json`. If it's not there in the raw response, your schema isn't server-rendered. Move JSON-LD generation to the server layer.
+
+[→ Read also: 8 Headless CMS SEO Mistakes That Kill Indexing in 2026](/blog/headless-cms-seo-mistakes-2026-indexing-fixes/)
+
+---
+
+## 5. Stale `dateModified` That Never Actually Changes
+
+Two failure modes here, and they're opposites — but both hurt you.
+
+**Failure mode A:** `dateModified` equals `datePublished` forever. Google uses content freshness signals to determine how frequently to recrawl and whether to present the page as a current source. An article that claims it was last modified on its original publish date and hasn't been touched since is strongly signaling "don't bother recrawling this." In the AI Overview era, freshness matters even more — stale pages are far less likely to be surfaced in AI-generated answers on time-sensitive queries.
+
+**Failure mode B:** `dateModified` is updated automatically on every deploy or CMS rebuild, even when no content actually changed. Google can detect this pattern — if hundreds of pages all have `dateModified` of exactly the same timestamp (your last deploy), and the content didn't meaningfully change, it reads as manipulation. The signal gets discounted, and you lose the freshness benefit for pages you actually do update.
+
+**Fix it:** Make `dateModified` reflect genuine content changes. Update it manually when you revise article content, update statistics, or add new sections. Wire it to a "last edited" field in your CMS, not to "last deployed." This matters both for Googlebot crawl prioritization and for AI systems that use freshness as a quality signal.
+
+---
+
+## 6. Fake or Inflated `AggregateRating` Markup
+
+This is a policy violation with an immediate and severe consequence: Google will strip rich results from any page found to have manipulated or fabricated review data in structured data. Not a warning. Not a demotion. The rich result is gone until a manual reinstatement request is processed.
+
+The pattern we see most often: a site uses `AggregateRating` schema with a `ratingValue` of 4.8 and `ratingCount` of 1,247 — but the page has no actual user reviews visible. Or the site aggregates ratings from a private internal survey and presents them as though they're customer reviews. Or the `ratingCount` is inflated beyond what's actually displayed.
+
+Google's guideline is specific: the aggregate rating must reflect genuine user feedback, and the reviews must be accessible on the page. Importing from third-party platforms is acceptable if you display those reviews, but you must show them — the schema and visible content must match (see Mistake #1).
+
+**Fix it:** Only implement `AggregateRating` on pages where real, visible user reviews exist. If you're aggregating from a third-party platform (Google Reviews, Trustpilot, etc.), display a representative set of those reviews on-page. Sync the `ratingCount` and `ratingValue` from your actual review data, not a cached or rounded approximation.
+
+[→ Read also: Product Schema in 2026: The Fields Google Now Requires for Rich Results](/blog/product-schema-2026-required-fields-shopping-rich-results/)
+
+---
+
+## 7. Missing `Person` Entity in `Article` Schema (and Why AI Systems Care)
+
+This one is specifically about AI visibility, not just rich results. When you implement `Article` or `BlogPosting` schema without an `author` field — or with `author` as a plain string instead of a `Person` entity — you're leaving a critical E-E-A-T signal on the table.
+
+AI Overviews and LLMs use author entity data to assess credibility. An article with a properly marked-up author — `@type: Person`, `name`, `url` pointing to a bio page, ideally with `sameAs` links to LinkedIn or Google Scholar — gives AI systems something to anchor the content's authority to. An article with no author, or `"author": "Admin"`, gives them nothing. In competitive, expertise-dependent niches (health, finance, legal, tech), this matters enormously for whether your content gets cited in AI-generated answers.
+
+The `sameAs` property is particularly powerful here. Linking your author entity to authoritative third-party profiles (their LinkedIn, a published paper, their Google Scholar profile, an industry association listing) tells AI systems: "this Person has verifiable credentials *outside* our site." That's the structured data equivalent of off-page authority — and it's almost universally skipped.
+
+**Fix it:** For every article, implement `author` as a `Person` object, not a string. Include `url` pointing to their on-site bio, and add `sameAs` with 2–4 external profile URLs. If the author doesn't have external profiles worth linking, that's an E-E-A-T signal worth improving separately.
+
+[→ Read also: Author Entity SEO in 2026: Who Signs Your AI-Written Draft?](/blog/author-entity-seo-2026-ai-written-content-bylines/)
+
+---
+
+## 8. Implementing Schema Once and Never Maintaining It
+
+Schema that's accurate on launch day becomes a liability over time. Prices change. Products go out of stock. Events pass. Reviews accumulate. Articles get updated. A `Product` schema with an `Offer` showing a price from 18 months ago isn't just useless — it's actively misleading to AI systems that read it and surface that price to users asking "how much does X cost?"
+
+This is the maintenance problem that no one talks about because the implementation gets ticked off a project checklist and forgotten. But AI search surfaces have added urgency: LLMs cache and reference your schema data. If a user asks an AI assistant about your product and it quotes your schema's stale price, that's a brand problem, not just an SEO problem.
+
+The maintenance failure also affects `Event` schema on pages for past events that never had the schema updated or removed. Google doesn't love serving rich results for events that ended six months ago. AI systems that surface "upcoming events" based on structured data will include your expired ones — and that erodes user trust in both the AI surface and your brand.
+
+**Fix it:** Schema needs to be treated like a data feed, not a one-time implementation. Connect it to your live data sources wherever possible — product prices from your inventory API, review counts from your review platform, event dates from your CMS. For content that can't be automated, build a quarterly schema audit into your content calendar. Review Search Console's Enhancements report for new errors as a leading indicator.
+
+---
+
+## Honorable Mentions
+
+Two more worth a quick callout:
+
+**Incorrect date formatting.** Dates in schema must follow ISO 8601 format (`2026-09-17` or `2026-09-17T08:00:00+00:00`). Human-readable formats like "September 17, 2026" silently invalidate date properties — they won't throw a validation error, but they won't be parsed correctly either.
+
+**Duplicate or conflicting schema blocks.** Multiple JSON-LD blocks on the same page declaring different values for the same entity (two `Product` blocks with different prices, for instance) confuse crawlers. Google takes an unpredictable one. Consolidate to a single block per entity type, or use the correct nesting structure for multiple types.
+
+---
+
+## How to Audit and Fix Your Schema Today
+
+The fastest audit workflow: pull your page's raw HTML (not the rendered DOM — use `curl` or View Source), extract every `application/ld+json` block, and run it through Google's Rich Results Test and the Schema.org Validator. Then cross-check every declared value against what's visibly on the page.
+
+For scale, Google Search Console's "Enhancements" section surfaces errors across the entire site, not just individual pages. Make it a weekly habit — new errors appear as Google recrawls and discovers schema drift between your code and your content.
+
+The honest take: most sites get schema right on implementation day and wrong over time. The mistakes that hurt you most in 2026 aren't the ones you made when you built the site — they're the ones that crept in through content updates, CMS migrations, plugin changes, and deploys that touched the template but not the data layer. Build maintenance into your process, not just the initial build.
+
+Schema done right is one of the highest-leverage technical SEO investments available. It's a direct line to rich result eligibility and AI citation probability — two of the most valuable organic visibility signals you have access to right now. Don't let quiet maintenance failures give that away.
+
+---
+
+## FAQ
+
+**Does schema markup directly affect Google rankings?**
+Not rankings directly — it's not a confirmed direct ranking factor. But it affects *visibility*, which affects click-through rate, which affects traffic. Rich results consistently outperform plain blue links in CTR. And AI Overview citation is a form of visibility that drives traffic entirely outside traditional rankings.
+
+**Which schema type is most important to implement correctly in 2026?**
+For most sites: `Article`/`BlogPosting` with proper `Person` author entities, and `BreadcrumbList`. For ecommerce: `Product` with complete `Offer` fields synced to live inventory. For local businesses: `LocalBusiness` with accurate NAP data.
+
+**How often should I audit schema markup?**
+Minimum quarterly for slow-changing sites. Monthly if you have active ecommerce inventory, frequently updated prices, or high publish velocity. Immediately after any CMS migration, plugin update, or template redesign.
+
+---
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "8 Schema Markup Mistakes That Kill Your Rich Results (And AI Citations) in 2026",
+  "description": "These 8 schema markup mistakes are silently blocking your rich results eligibility and AI Overview citations in 2026.",
+  "numberOfItems": 8,
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Marking up hidden or non-visible content" },
+    { "@type": "ListItem", "position": 2, "name": "Using retired or deprecated schema types" },
+    { "@type": "ListItem", "position": 3, "name": "HTML inside JSON-LD values" },
+    { "@type": "ListItem", "position": 4, "name": "Schema trapped inside unrendered JavaScript" },
+    { "@type": "ListItem", "position": 5, "name": "Stale dateModified that never changes" },
+    { "@type": "ListItem", "position": 6, "name": "Fake or inflated AggregateRating markup" },
+    { "@type": "ListItem", "position": 7, "name": "Missing Person entity in Article schema" },
+    { "@type": "ListItem", "position": 8, "name": "Implementing schema once and never maintaining it" }
+  ]
+}
+```
