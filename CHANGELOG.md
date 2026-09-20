@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.25](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.24...v1.2.25) (2026-09-20)
+
+
+### Content
+
+* add "GA4's AI Assistant Channel vs GSC: Your AI Traffic Still Doesn't Add Up" blog post ([533debb](https://github.com/sewwa-cloud/sewwa.com/commit/533debbee438375d601583d091aac2798954556b))
+
 ## [1.2.24](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.23...v1.2.24) (2026-09-19)
 
 
