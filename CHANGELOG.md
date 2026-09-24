@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.26](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.25...v1.2.26) (2026-09-24)
+
+
+### Content
+
+* add "PWA Service Worker SEO: How Caching Quietly Kills Your Indexing" blog post ([7c791ce](https://github.com/sewwa-cloud/sewwa.com/commit/7c791ceda40d93797c0d39b5cdd343d524019d53))
+
 ## [1.2.25](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.24...v1.2.25) (2026-09-20)
 
 
