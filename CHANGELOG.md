@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.27](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.26...v1.2.27) (2026-09-24)
+
+
+### Content
+
+* add "Category Page Schema in 2026: What Actually Gets Rich Results" blog post ([bab6c30](https://github.com/sewwa-cloud/sewwa.com/commit/bab6c304f6f936b9839f37aaa2d7c459bfa27e65))
+
 ## [1.2.26](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.25...v1.2.26) (2026-09-24)
 
 
