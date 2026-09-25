@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.28](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.27...v1.2.28) (2026-09-25)
+
+
+### Content
+
+* add "Organization Schema in 2026: How to Actually Earn a Knowledge Panel" blog post ([0f5445f](https://github.com/sewwa-cloud/sewwa.com/commit/0f5445fb3d41e6740c115c8fd97d2e430b4acca2))
+
 ## [1.2.27](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.26...v1.2.27) (2026-09-24)
 
 
