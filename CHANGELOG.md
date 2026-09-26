@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.29](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.28...v1.2.29) (2026-09-26)
+
+
+### Content
+
+* add "8 Price & Availability Edge Cases Breaking Google Shopping in 2026" blog post ([9f386d6](https://github.com/sewwa-cloud/sewwa.com/commit/9f386d60cf200c983bf8f63dba256079952b79bb))
+
 ## [1.2.28](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.27...v1.2.28) (2026-09-25)
 
 
