@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.30](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.29...v1.2.30) (2026-09-26)
+
+
+### Content
+
+* add "AI Bot Monetization 2026: AWS, Akamai & Cloudflare's Toll Roads" blog post ([c67cc9a](https://github.com/sewwa-cloud/sewwa.com/commit/c67cc9a684c02f76ee8a81e084446be3b5636735))
+
 ## [1.2.29](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.28...v1.2.29) (2026-09-26)
 
 
