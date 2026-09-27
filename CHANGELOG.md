@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.31](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.30...v1.2.31) (2026-09-27)
+
+
+### Content
+
+* add "Local Inventory Ads Default 2026: The Silent SEO Risk in Your Feed" blog post ([a894d68](https://github.com/sewwa-cloud/sewwa.com/commit/a894d688309787dcd96f147ae3b9bdc15d488b6d))
+
 ## [1.2.30](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.29...v1.2.30) (2026-09-26)
 
 
