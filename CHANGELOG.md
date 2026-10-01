@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.32](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.31...v1.2.32) (2026-10-01)
+
+
+### Content
+
+* add "The GA4 Blind Spot: Why AI Browsers and WebMCP Break Your Tracking" blog post ([2203173](https://github.com/sewwa-cloud/sewwa.com/commit/220317303120c36ec5f73387a7d6f0726888cada))
+
 ## [1.2.31](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.30...v1.2.31) (2026-09-27)
 
 
