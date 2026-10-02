@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.33](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.32...v1.2.33) (2026-10-02)
+
+
+### Content
+
+* add "7 Steps to Implement Web Bot Auth and Verify Googlebot in 2026" blog post ([0ff06a3](https://github.com/sewwa-cloud/sewwa.com/commit/0ff06a3bec9dfd33f87ade12bbe75bbf933a4da7))
+
 ## [1.2.32](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.31...v1.2.32) (2026-10-01)
 
 
