@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.34](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.33...v1.2.34) (2026-10-03)
+
+
+### Content
+
+* add "Core Web Vitals RUM in 2026: Build Your Own INP Pipeline" blog post ([c60544b](https://github.com/sewwa-cloud/sewwa.com/commit/c60544b4f9547b5cce758d1f92b68bbff4f7d71a))
+
 ## [1.2.33](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.32...v1.2.33) (2026-10-02)
 
 
