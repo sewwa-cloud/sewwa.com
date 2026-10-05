@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.35](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.34...v1.2.35) (2026-10-05)
+
+
+### Content
+
+* add "Cloudflare Workers Cache in 2026: The SEO Risk Hiding in Your Cache Key" blog post ([8ff735f](https://github.com/sewwa-cloud/sewwa.com/commit/8ff735f8426b6cb13d1d7eb15ceec818ad8a181d))
+
 ## [1.2.34](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.33...v1.2.34) (2026-10-03)
 
 
