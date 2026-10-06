@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.36](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.35...v1.2.36) (2026-10-06)
+
+
+### Content
+
+* add "8 SEO Regressions AI Coding Agents Keep Shipping in 2026" blog post ([17127fb](https://github.com/sewwa-cloud/sewwa.com/commit/17127fb5dab6e9171cb0e9bd6029440786750351))
+
 ## [1.2.35](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.34...v1.2.35) (2026-10-05)
 
 
