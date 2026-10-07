@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.37](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.36...v1.2.37) (2026-10-07)
+
+
+### Content
+
+* add "GA4 vs Search Console 2026: Why Organic Search Never Matches" blog post ([3ac8418](https://github.com/sewwa-cloud/sewwa.com/commit/3ac84185ac4422d8a012551a28753379b33cd45e))
+
 ## [1.2.36](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.35...v1.2.36) (2026-10-06)
 
 
