@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.38](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.37...v1.2.38) (2026-10-08)
+
+
+### Content
+
+* add "GSC BigQuery SQL Cookbook: 3 Queries Every SEO Needs" blog post ([b3688a0](https://github.com/sewwa-cloud/sewwa.com/commit/b3688a023a45f284d8454952adee8fd332b2d1e0))
+
 ## [1.2.37](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.36...v1.2.37) (2026-10-07)
 
 
