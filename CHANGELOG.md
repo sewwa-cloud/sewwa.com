@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.39](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.38...v1.2.39) (2026-10-09)
+
+
+### Content
+
+* add "8 Next.js vs Astro Core Web Vitals Differences in 2026" blog post ([cb762e1](https://github.com/sewwa-cloud/sewwa.com/commit/cb762e1d696a28c9bb8891eae720a7e3f94ffb08))
+
 ## [1.2.38](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.37...v1.2.38) (2026-10-08)
 
 
