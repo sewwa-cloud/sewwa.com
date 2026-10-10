@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.40](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.39...v1.2.40) (2026-10-10)
+
+
+### Content
+
+* add "Agentic CMS SEO Risks: A 2026 Governance Checklist" blog post ([5d17ad3](https://github.com/sewwa-cloud/sewwa.com/commit/5d17ad319de861e8018a611b13e6dfd9fe757b3d))
+
 ## [1.2.39](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.38...v1.2.39) (2026-10-09)
 
 
