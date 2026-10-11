@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.41](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.40...v1.2.41) (2026-10-11)
+
+
+### Content
+
+* add AGENTS.md SEO Rule-Pack blog post ([7e598a9](https://github.com/sewwa-cloud/sewwa.com/commit/7e598a9a791f50d01378b6753fad8ff9f8eb80c3))
+
 ## [1.2.40](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.39...v1.2.40) (2026-10-10)
 
 
