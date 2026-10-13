@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.42](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.41...v1.2.42) (2026-10-13)
+
+
+### Content
+
+* add "WebMCP in 2026: Why AI Agents Still Can't Find Your Tools" blog post ([#155](https://github.com/sewwa-cloud/sewwa.com/issues/155)) ([40bb128](https://github.com/sewwa-cloud/sewwa.com/commit/40bb128f07107e9711b1f481d815b576f18133b6))
+
 ## [1.2.41](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.40...v1.2.41) (2026-10-11)
 
 
