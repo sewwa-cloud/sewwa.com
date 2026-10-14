@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.43](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.42...v1.2.43) (2026-10-14)
+
+
+### Content
+
+* add "Google Spam Update Recovery: A Developer's Audit Playbook" blog post ([78d8f8f](https://github.com/sewwa-cloud/sewwa.com/commit/78d8f8facc639e0373677d9ce3fc3fa1c463ec19))
+
 ## [1.2.42](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.41...v1.2.42) (2026-10-13)
 
 
