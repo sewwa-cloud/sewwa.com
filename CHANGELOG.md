@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.44](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.43...v1.2.44) (2026-10-16)
+
+
+### Content
+
+* add "7 Next.js ISR Mistakes That Serve Stale Pages to Googlebot" blog post ([#159](https://github.com/sewwa-cloud/sewwa.com/issues/159)) ([2b94dac](https://github.com/sewwa-cloud/sewwa.com/commit/2b94dac2b337e51c1b9d19546bfe3cd9db41bf0e))
+
 ## [1.2.43](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.42...v1.2.43) (2026-10-14)
 
 
