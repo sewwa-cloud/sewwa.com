@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.45](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.44...v1.2.45) (2026-10-17)
+
+
+### Content
+
+* add "Site Migration Redirect Map: Test It in CI and Logs" blog post ([#161](https://github.com/sewwa-cloud/sewwa.com/issues/161)) ([b44c3d6](https://github.com/sewwa-cloud/sewwa.com/commit/b44c3d6a332099605257a46a1b8782eae2fea095))
+
 ## [1.2.44](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.43...v1.2.44) (2026-10-16)
 
 
