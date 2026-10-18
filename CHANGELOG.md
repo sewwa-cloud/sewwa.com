@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.46](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.45...v1.2.46) (2026-10-18)
+
+
+### Content
+
+* add "7 Hreflang Mistakes That Make Google Ignore Your Translations" blog post ([f19738a](https://github.com/sewwa-cloud/sewwa.com/commit/f19738a90a232857caa133304d9c492584261582))
+
 ## [1.2.45](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.44...v1.2.45) (2026-10-17)
 
 
