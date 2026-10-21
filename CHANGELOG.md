@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.47](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.46...v1.2.47) (2026-10-21)
+
+
+### Content
+
+* add "Pagination vs Infinite Scroll SEO: A Developer's 2026 Fix Guide" blog post ([#166](https://github.com/sewwa-cloud/sewwa.com/issues/166)) ([54ea09f](https://github.com/sewwa-cloud/sewwa.com/commit/54ea09f612afea2200acd1d2f2ca99c10778680c))
+
 ## [1.2.46](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.45...v1.2.46) (2026-10-18)
 
 
