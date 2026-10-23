@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.48](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.47...v1.2.48) (2026-10-23)
+
+
+### Content
+
+* add "Canonical Tags in Next.js and Astro: A 2026 Dev Guide" blog post ([#168](https://github.com/sewwa-cloud/sewwa.com/issues/168)) ([2d08ce7](https://github.com/sewwa-cloud/sewwa.com/commit/2d08ce793cac53e5c47410549be7af64b16f7179))
+
 ## [1.2.47](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.46...v1.2.47) (2026-10-21)
 
 
