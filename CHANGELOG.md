@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.49](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.48...v1.2.49) (2026-10-24)
+
+
+### Content
+
+* add "7 XML Sitemap Mistakes That Make Google Ignore Your lastmod" blog post ([#170](https://github.com/sewwa-cloud/sewwa.com/issues/170)) ([0d24b12](https://github.com/sewwa-cloud/sewwa.com/commit/0d24b12208c0737ed010de46194e89d8e71ed31b))
+
 ## [1.2.48](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.47...v1.2.48) (2026-10-23)
 
 
