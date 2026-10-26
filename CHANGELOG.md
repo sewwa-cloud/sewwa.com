@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.50](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.49...v1.2.50) (2026-10-26)
+
+
+### Content
+
+* add "Next.js Soft 404s: When notFound() Still Returns 200" blog post ([#172](https://github.com/sewwa-cloud/sewwa.com/issues/172)) ([cc22072](https://github.com/sewwa-cloud/sewwa.com/commit/cc22072b97f9f700ab5a2c1ff534d41f27533578))
+
 ## [1.2.49](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.48...v1.2.49) (2026-10-24)
 
 
