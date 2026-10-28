@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.51](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.50...v1.2.51) (2026-10-28)
+
+
+### Content
+
+* add "Googlebot's 2 MB HTML Limit: Check If Your Pages Get Cut Off" blog post ([#174](https://github.com/sewwa-cloud/sewwa.com/issues/174)) ([1d986fc](https://github.com/sewwa-cloud/sewwa.com/commit/1d986fc67d1d1870569424c02718fa9d03e27ffb))
+
 ## [1.2.50](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.49...v1.2.50) (2026-10-26)
 
 
