@@ -1,0 +1,174 @@
+---
+title: "7 robots.txt Mistakes That Quietly Hurt Crawling in 2026"
+date: 2026-10-22
+lastUpdated: 2026-10-22
+description: "These robots.txt mistakes can block rendering, leak staging rules, or ignore AI bots. Learn 7 fixes, with Next.js code, that protect crawling in 2026."
+slug: "robots-txt-mistakes-crawling-ai-bots-2026"
+tags:
+  - SEO
+  - AI
+  - Web Development
+---
+
+# 7 robots.txt Mistakes That Quietly Hurt Crawling in 2026
+
+A robots.txt file is maybe 20 lines long. It's also one of the few files on your site that can switch off Google's access to the whole thing with a single character. One stray `/` and you're invisible.
+
+The scary part isn't the dramatic failures. Those get noticed within a day. It's the quiet ones: a rule that blocks your JavaScript bundle, a directive Google has never supported, a staging file that rode along into production. Nobody sees an error. Rankings just drift.
+
+This list collects seven robots.txt mistakes of that quiet kind, checked against [Google's current robots.txt documentation](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt). I ranked them by how much damage they can do versus how often they show up on real sites. For each one, you'll get the SEO consequence and a concrete fix, including how to do it in a modern framework like Next.js.
+
+## 1. Shipping the Staging `Disallow: /` to Production
+
+This is the classic, and it's still number one for a reason. A staging site blocks everything (sensible), the deploy pipeline copies the file along with the build (not sensible), and production quietly inherits `Disallow: /`.
+
+The SEO impact is brutal but slow. Google keeps your indexed pages for a while, then stops recrawling them, and fresh content never gets picked up. By the time traffic dips, the cause is weeks old.
+
+The fix is to stop treating robots.txt as a static file that lives in the repo. Generate it per environment. In the Next.js App Router, that's a `robots.ts` file:
+
+```ts
+// app/robots.ts
+import type { MetadataRoute } from 'next'
+
+export default function robots(): MetadataRoute.Robots {
+  const isProd = process.env.VERCEL_ENV === 'production'
+  return isProd
+    ? {
+        rules: [{ userAgent: '*', allow: '/' }],
+        sitemap: 'https://www.example.com/sitemap.xml',
+      }
+    : { rules: [{ userAgent: '*', disallow: '/' }] }
+}
+```
+
+Then add a CI check that fetches `/robots.txt` on the production URL after every deploy and fails if it contains a bare `Disallow: /` under `User-agent: *`. Two minutes of scripting, years of peace. If you've been through a replatform, our [site migration redirect map testing guide](/blog/site-migration-redirect-map-testing-ci-log-validation-2026/) shows where to slot this kind of check into the pipeline.
+
+## 2. Using robots.txt to Remove Pages From Google
+
+Here's the one that confuses everyone. `Disallow` controls crawling. It does not control indexing. If other pages link to a blocked URL, Google can still index the bare URL with no description, because it was never allowed to read the page and find out what you wanted.
+
+Worse, if you add a `noindex` tag to a page and *also* block it in robots.txt, Google can't crawl the page to see the tag. The page stays in the index. You've built a lock and thrown away the key.
+
+The fix: pick the right tool. To keep a page out of search, leave it crawlable and serve `noindex` (meta tag or `X-Robots-Tag` header). Once it has dropped out, you can optionally block it if crawl load is a concern. For sensitive content, use authentication, not robots.txt, because the file is public and anyone can read it.
+
+## 3. Relying on Directives Google Doesn't Support
+
+Google's documentation lists four supported fields: `user-agent`, `allow`, `disallow`, and `sitemap`. Everything else is ignored. That includes `crawl-delay` (which Google explicitly says it doesn't support) and `noindex` lines inside robots.txt, which stopped working years ago but still appear in copy-pasted templates.
+
+Why it matters: you may *believe* you're throttling Googlebot or deindexing a section when nothing is happening. Other crawlers, such as Bing, treat some directives differently, so a single file can behave differently per bot.
+
+The fix is an audit. Open your file and delete any line that isn't one of those four fields unless you have a specific, documented reason for a non-Google crawler. If you actually need to slow crawling, manage server capacity and response codes instead. Google's crawl rate adapts to how your server responds.
+
+## 4. Blocking CSS, JavaScript, or API Routes That Rendering Needs
+
+Google renders pages with a headless Chromium, and rendering needs the same resources a browser does. Block `/static/`, `/_next/`, or a `/api/` route that supplies the main content, and Googlebot sees a broken or empty page. For a JavaScript-heavy site, that's a quiet disaster: the HTML looks fine in your browser, but Google's rendered version is missing the content.
+
+This is common after a "tidy-up" where someone blocks `/_next/` or `/assets/` to "save crawl budget." The savings are tiny and the risk is large.
+
+The fix: allow every resource needed for rendering. Use the URL Inspection tool in Search Console, open "View crawled page," and check the rendered HTML and the list of blocked resources. If you rely on JavaScript rendering at all, our [JavaScript SEO guide for AI crawlers, React, Next.js and Astro](/blog/javascript-seo-ai-crawlers-react-nextjs-astro/) explains why this matters even more now that AI crawlers behave differently from Googlebot.
+
+## 5. Misreading Rule Precedence and Wildcards
+
+Robots.txt rules aren't read top to bottom. Google applies the *most specific* rule, judged by path length. When rules conflict (including wildcard cases), the *least restrictive* one wins. And only the most specific matching `user-agent` group applies. A `Googlebot` group does not inherit anything from your `*` group.
+
+That last point bites teams who add a dedicated block for one bot:
+
+```txt
+User-agent: *
+Disallow: /internal-search/
+Disallow: /cart/
+
+User-agent: Googlebot
+Allow: /
+```
+
+Looks fine. Isn't. Googlebot now ignores the `*` group entirely, so `/internal-search/` and `/cart/` are wide open to it. Another gotcha: path values are case-sensitive, so `Disallow: /Private/` does nothing for `/private/`.
+
+The fix: repeat the shared rules inside every specific group, and test with a parser instead of eyeballing. Google's open-source robots.txt parser is the reference implementation, and most SEO crawlers include a tester. For e-commerce sites with parameter-heavy URLs, pair this with the approach in our [faceted navigation and crawl budget guide](/blog/faceted-navigation-seo-2026-crawl-budget-ecommerce/).
+
+## 6. Letting robots.txt Return Errors (or Hit the Size Cap)
+
+Google treats robots.txt status codes in a very specific way, and the details surprise people:
+
+- **4xx (except 429):** treated as "no robots.txt exists," so nothing is restricted.
+- **5xx:** Google pauses crawling for the first 12 hours and keeps retrying. If it can't get a fresh copy, it uses the last good cached version for up to 30 days. After that, with no cached version, it treats the site as unrestricted; if the site generally has availability problems, it stops crawling.
+- **Redirects:** Google follows at least five hops, then treats the result as a 404.
+- **Size:** anything after 500 KiB is ignored.
+
+So a flaky CDN rule that returns 403 to Googlebot doesn't "protect" you. It tells Google there are no rules. And a bloated file generated from thousands of auto-listed URLs can silently lose its last (often most important) rules.
+
+The fix: serve robots.txt as a fast, static 200 from the origin or edge with no auth and no geo-rules. Monitor the response code. Keep the file small; if you need thousands of rules, your URL structure is the real problem. Also remember scope: rules apply only to the exact host, protocol, and port, so `blog.example.com` needs its own file. Server logs are the best way to confirm what Googlebot actually sees, which we cover in [server log analysis for SEO](/blog/server-log-analysis-seo-2026-what-search-console-misses/).
+
+## 7. Treating AI Crawlers as One Decision
+
+In 2026, robots.txt isn't just about Googlebot. You now have training crawlers, search crawlers, and user-triggered agents, each with different user-agent strings and different business value. Blocking "AI bots" with one blanket rule can cut you out of AI search citations you actually want, while leaving training crawlers you don't want untouched.
+
+Two things worth knowing. First, Google's `Google-Extended` token is a control for whether content is used for Gemini training and grounding; it isn't a separate crawler, and per Google it doesn't affect your inclusion or ranking in Search. Second, robots.txt is a request, not enforcement. Well-behaved bots respect it; others don't.
+
+The fix: decide per bot, in writing.
+
+```txt
+# Allow search/citation crawlers you want to appear in
+User-agent: OAI-SearchBot
+User-agent: PerplexityBot
+Allow: /
+
+# Opt out of model training
+User-agent: GPTBot
+User-agent: Google-Extended
+User-agent: CCBot
+Disallow: /
+```
+
+Check each vendor's current documentation for exact user-agent names, because they change. If you need real enforcement, that's a network-level job; see our [Cloudflare AI crawler block audit](/blog/cloudflare-ai-crawler-block-september-2026-seo-audit/) and the [llms.txt reality check](/blog/llms-txt-2026-does-it-work-what-to-do-instead/).
+
+## A Quick 10-Minute robots.txt Audit
+
+You don't need a tool suite. Run this sequence:
+
+1. Fetch `/robots.txt` for every host (www, blog, shop) and confirm a 200 status.
+2. Search the file for a bare `Disallow: /` and for unsupported fields.
+3. Compare each specific `User-agent` group against your `*` group.
+4. Inspect three key URLs in Search Console and review blocked resources.
+5. Add the production check to CI.
+
+Tool idea for the builders reading this: a tiny CLI that fetches robots.txt across all your subdomains, parses it with Google's parser, and diffs it against the previous deploy. It could post to Slack when a rule that blocks a top-traffic URL appears. Cheap to build, and it prevents the most expensive mistake on this list.
+
+## Conclusion
+
+robots.txt looks too small to matter, which is exactly why it gets neglected. Yet these seven mistakes, from the staging leak to ignored unsupported directives to blanket AI-bot rules, all share a pattern: nothing visibly breaks, and your crawling and discoverability erode in the background.
+
+If you only fix two things today, make them the production check in CI (#1) and the resource audit in Search Console (#4). Those catch the failures that cost the most. Then work down the list. Your future rankings will thank you, quietly, which is the only way robots.txt ever communicates.
+
+## FAQ
+
+**Does Disallow remove a page from Google?**
+No. It blocks crawling, not indexing. Use `noindex` on a crawlable page instead.
+
+**Does Google support crawl-delay?**
+No. Google's documentation explicitly says it's not supported.
+
+**How long does Google cache robots.txt?**
+Generally up to 24 hours, and longer if it can't refresh.
+
+**Should I block AI crawlers?**
+Decide per bot. Training and search/citation crawlers serve different goals.
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "7 robots.txt Mistakes That Quietly Hurt Crawling in 2026",
+  "description": "Seven robots.txt mistakes that hurt crawling, rendering, and AI visibility, with fixes.",
+  "numberOfItems": 7,
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Shipping the staging Disallow: / to production"},
+    {"@type": "ListItem", "position": 2, "name": "Using robots.txt to remove pages from Google"},
+    {"@type": "ListItem", "position": 3, "name": "Relying on unsupported directives"},
+    {"@type": "ListItem", "position": 4, "name": "Blocking CSS, JavaScript, or API routes"},
+    {"@type": "ListItem", "position": 5, "name": "Misreading rule precedence and wildcards"},
+    {"@type": "ListItem", "position": 6, "name": "Letting robots.txt return errors or exceed size cap"},
+    {"@type": "ListItem", "position": 7, "name": "Treating AI crawlers as one decision"}
+  ]
+}
+```
