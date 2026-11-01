@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.53](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.52...v1.2.53) (2026-11-01)
+
+
+### Content
+
+* add "Image SEO in 2026: Make Next.js Images Indexable and Fast" blog post ([3acb0c8](https://github.com/sewwa-cloud/sewwa.com/commit/3acb0c8758432275c9efcf17e987448fbf872583))
+
 ## [1.2.52](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.51...v1.2.52) (2026-10-29)
 
 
