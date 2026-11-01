@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.52](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.51...v1.2.52) (2026-10-29)
+
+
+### Content
+
+* add "7 robots.txt Mistakes That Quietly Hurt Crawling in 2026" blog post ([#176](https://github.com/sewwa-cloud/sewwa.com/issues/176)) ([70e6952](https://github.com/sewwa-cloud/sewwa.com/commit/70e6952617ad5aee9ca948d2df2007b3737599d8))
+
 ## [1.2.51](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.50...v1.2.51) (2026-10-28)
 
 
