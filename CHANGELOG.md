@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.54](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.53...v1.2.54) (2026-11-02)
+
+
+### Content
+
+* add "Internal Linking in Next.js: Crawlable Links and Click Depth" blog post ([#180](https://github.com/sewwa-cloud/sewwa.com/issues/180)) ([d0b2b06](https://github.com/sewwa-cloud/sewwa.com/commit/d0b2b06d2c4aa27cd496c06e85edd32c99bc95e3))
+
 ## [1.2.53](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.52...v1.2.53) (2026-11-01)
 
 
