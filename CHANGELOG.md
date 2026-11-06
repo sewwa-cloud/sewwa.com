@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.55](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.54...v1.2.55) (2026-11-06)
+
+
+### Content
+
+* add "7 URL Structure Mistakes Hurting Your SEO in 2026" blog post ([#183](https://github.com/sewwa-cloud/sewwa.com/issues/183)) ([5272343](https://github.com/sewwa-cloud/sewwa.com/commit/5272343a8ed2fd127e7fe647cc3a5404940ed3c8))
+
 ## [1.2.54](https://github.com/sewwa-cloud/sewwa.com/compare/v1.2.53...v1.2.54) (2026-11-02)
 
 
